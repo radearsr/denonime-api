@@ -1,14 +1,15 @@
 const ClientError = require("../../../exceptions/ClientError");
 const validator = require("../../../validators/users");
+const userService = require("../../../services/users/UserServices");
 
 exports.postUserController = async (req, res) => {
   try {
-    console.log(req.body);
-    const payload = req.body;
     validator.validateUserPayload(req.body);
+    await userService.verifyAvailableUsername(req.body.username);
+    const addedUser = await userService.addUser(req.body);
     res.status(201).send({
       status: "success",
-      data: payload,
+      data: addedUser,
     });
   } catch (error) {
     if (error instanceof ClientError) {

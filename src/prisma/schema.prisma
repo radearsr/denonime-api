@@ -19,6 +19,7 @@ model User {
   lastName  String  @db.VarChar(255)
   username  String  @db.VarChar(255)
   password  String  @db.Text
+  email     String  @db.VarChar(200)
   role      Role    @relation(fields: [roleId], references: [id_roles])
   roleId    Int   
 }

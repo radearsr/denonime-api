@@ -14,9 +14,9 @@ ORM WITH PRISMA:
 FEATURE REGISTER USERS:
   ✔ Register User @done(23-01-12 07:58)
   ✔ Validation Payload @done(23-01-12 07:58)
-  ☐ Check Available Username
-  ☐ Register Success
-  ☐ Response Username And Id User, Roles Reader
+  ✔ Check Available Username @done(23-01-13 06:12)
+  ✔ Register Success @done(23-01-13 06:12)
+  ✔ Response Username And Id User, Roles Reader @done(23-01-13 06:20)
 
 FEATURE LOGIN USERS:
   ☐ Login User

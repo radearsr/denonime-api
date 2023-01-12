@@ -1,0 +1,31 @@
+CODE BASE REFERENCES:
+  ✔ https://www.freecodecamp.org/news/how-to-organize-express-controllers-for-large-codebases-2d8284bbf817/ @done(23-01-12 07:58)
+
+ORM WITH PRISMA:
+  ✔ Build Model Users @done(23-01-12 07:57)
+  ✔ Build Model Tokens @done(23-01-12 07:58)
+  ✔ Build Model Roles @done(23-01-12 07:58)
+  ☐ Build Model Animes
+  ☐ Build Model Episodes
+  ☐ Build Model Genres
+  ☐ Build Model Anime Genres
+  ☐ Build Model Anime Episodes
+
+FEATURE REGISTER USERS:
+  ✔ Register User @done(23-01-12 07:58)
+  ✔ Validation Payload @done(23-01-12 07:58)
+  ☐ Check Available Username
+  ☐ Register Success
+  ☐ Response Username And Id User, Roles Reader
+
+FEATURE LOGIN USERS:
+  ☐ Login User
+  ☐ Validation Payload
+  ☐ Check Found Username
+  ☐ Check Correct Password
+  ☐ Create Access Token And Refresh Token
+  ☐ Response Access Token And Refresh Token
+
+FEATURE UPDATE ACCESS TOKEN:
+  ☐ Refresh Token
+  ☐ 

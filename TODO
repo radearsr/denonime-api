@@ -19,10 +19,10 @@ FEATURE REGISTER USERS:
   ✔ Response Username And Id User, Roles Reader @done(23-01-13 06:20)
 
 FEATURE LOGIN USERS:
-  ☐ Login User
-  ☐ Validation Payload
-  ☐ Check Found Username
-  ☐ Check Correct Password
+  ✔ Login User @done(23-01-13 08:07)
+  ✔ Validation Payload @done(23-01-13 08:07)
+  ✔ Check Found Username @done(23-01-13 08:07)
+  ✔ Check Correct Password @done(23-01-13 08:07)
   ☐ Create Access Token And Refresh Token
   ☐ Response Access Token And Refresh Token
 

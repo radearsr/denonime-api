@@ -5,7 +5,7 @@ const InvariantError = require("../../exceptions/InvariantError");
 const prisma = new PrismaClient();
 
 exports.verifyAvailableUsername = async (username) => {
-  const availableUsername = await prisma.user.findMany({
+  const availableUsername = await prisma.user.findFirst({
     where: { username },
   });
   if (availableUsername.length >= 1) {

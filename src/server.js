@@ -5,6 +5,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/v1/users", require("./api/v1/users"));
+app.use("/api/v1/authentications", require("./api/v1/authentications"));
 
 app.all("*", (req, res) => {
   res.status(404);

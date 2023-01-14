@@ -1,17 +1,30 @@
 const ClientError = require("../../../exceptions/ClientError");
 const validator = require("../../../validators/authentications");
-const services = require("../../../services/authentications/AuthenticationService");
+const UserServices = require("../../../services/users/UserServices");
+const AutenticationService = require("../../../services/authentications/AuthenticationService");
+const tokens = require("../../../tokens/TokenManager");
 
 exports.postUserAuthentication = async (req, res) => {
   try {
     validator.validateLoginPayload(req.body);
+
     const { username, password } = req.body;
-    await services.verifyUserCredential(username, password);
+    const { userId, roleId } = await UserServices.verifyUserCredential(username, password);
+
+    const accessToken = tokens.generateAccessToken({ userId, roleId });
+    const refreshToken = tokens.generateRefreshToken({ userId, roleId });
+
+    await AutenticationService.addRefreshToken(refreshToken);
+
     return res.json({
       status: "success",
-      data: req.body,
+      data: {
+        accessToken,
+        refreshToken,
+      },
     });
   } catch (error) {
+    console.error(error);
     if (error instanceof ClientError) {
       return res.status(error.statusCode).json({
         status: "fail",

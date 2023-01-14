@@ -29,7 +29,6 @@ exports.addUser = async (payload) => {
   const role = await prisma.role.findUnique({
     where: { id_roles: 2 },
   });
-  console.log();
   if (addedUser.id < 1) {
     throw new InvariantError("User gagal ditambahkan");
   }
@@ -58,7 +57,13 @@ exports.verifyUserCredential = async (username, password) => {
   }
   const { password: encodedPassword } = availableUsername;
   const match = await bcrypt.compare(password, encodedPassword);
+
   if (!match) {
     throw new AuthenticationError("Password yang anda masukkan salah");
   }
+
+  return {
+    userId: availableUsername.id,
+    roleId: availableUsername.roleId,
+  };
 };

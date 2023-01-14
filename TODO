@@ -28,4 +28,12 @@ FEATURE LOGIN USERS:
 
 FEATURE UPDATE ACCESS TOKEN:
   ☐ Refresh Token
-  ☐ 
+  ☐ Validation Refresh Token With Server
+  ☐ Returning UserId and RoleId Decoded to create again AccessToken
+  ☐ Response AccessToken
+
+FEATURE DELETE REFRESH TOKEN / LOGOUT: 
+  ☐ Refresh Token
+  ☐ Validation Refresh Token With Server
+  ☐ Is Available RefreshToken Remove
+  ☐ Response Success Remove

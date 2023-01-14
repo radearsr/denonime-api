@@ -18,6 +18,7 @@ exports.postUserAuthentication = async (req, res) => {
 
     return res.json({
       status: "success",
+      message: "Berhasil menambahkan authentication",
       data: {
         accessToken,
         refreshToken,

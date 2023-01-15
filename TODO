@@ -27,13 +27,13 @@ FEATURE LOGIN USERS:
   ✔ Response Access Token And Refresh Token @done(23-01-15 05:36)
 
 FEATURE UPDATE ACCESS TOKEN:
-  ☐ Refresh Token
-  ☐ Validation Refresh Token With Server
-  ☐ Returning UserId and RoleId Decoded to create again AccessToken
-  ☐ Response AccessToken
+  ✔ Refresh Token @done(23-01-15 07:11)
+  ✔ Validation Refresh Token With Server @done(23-01-15 07:11)
+  ✔ Returning UserId and RoleId Decoded to create again AccessToken @done(23-01-15 07:11)
+  ✔ Response AccessToken @done(23-01-15 07:11)
 
 FEATURE DELETE REFRESH TOKEN / LOGOUT: 
-  ☐ Refresh Token
-  ☐ Validation Refresh Token With Server
-  ☐ Is Available RefreshToken Remove
-  ☐ Response Success Remove
+  ✔ Refresh Token @done(23-01-15 07:42)
+  ✔ Validation Refresh Token With Server @done(23-01-15 07:42)
+  ✔ Is Available RefreshToken Remove @done(23-01-15 07:42)
+  ✔ Response Success Remove @done(23-01-15 07:42)

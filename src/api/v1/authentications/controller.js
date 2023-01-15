@@ -16,7 +16,7 @@ exports.postUserAuthentication = async (req, res) => {
 
     await AutenticationService.addRefreshToken(refreshToken);
 
-    return res.json({
+    return res.status(201).send({
       status: "success",
       message: "Berhasil menambahkan authentication",
       data: {
@@ -25,13 +25,72 @@ exports.postUserAuthentication = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error(error);
     if (error instanceof ClientError) {
-      return res.status(error.statusCode).json({
+      return res.status(error.statusCode).send({
         status: "fail",
         message: error.message,
       });
     }
+    console.error(error);
+    return res.status(500).send({
+      status: "error",
+      message: "Terjadi kegagalan pada server kami.",
+    });
+  }
+};
+
+exports.putAccessToken = async (req, res) => {
+  try {
+    validator.validateTokenPayload(req.body);
+
+    const { refreshToken } = req.body;
+
+    await AutenticationService.verifyRefreshToken(refreshToken);
+    const { userId, roleId } = tokens.verifyRefreshToken(refreshToken);
+
+    const accessToken = tokens.generateAccessToken({ userId, roleId });
+    return res.send({
+      status: "success",
+      message: "Berhasil memperbarui token",
+      data: {
+        accessToken,
+      },
+    });
+  } catch (error) {
+    if (error instanceof ClientError) {
+      return res.status(error.statusCode).send({
+        status: "fail",
+        message: error.message,
+      });
+    }
+    console.error(error);
+    return res.status(500).send({
+      status: "error",
+      message: "Terjadi kegagalan pada server kami.",
+    });
+  }
+};
+
+exports.deleteRefreshToken = async (req, res) => {
+  try {
+    validator.validateTokenPayload(req.body);
+    const { refreshToken } = req.body;
+
+    await AutenticationService.verifyRefreshToken(refreshToken);
+    await AutenticationService.deleteRefreshToken(refreshToken);
+
+    return res.send({
+      status: "success",
+      message: "Berhasil menghapus token",
+    });
+  } catch (error) {
+    if (error instanceof ClientError) {
+      return res.status(error.statusCode).send({
+        status: "fail",
+        message: error.message,
+      });
+    }
+    console.error(error);
     return res.status(500).send({
       status: "error",
       message: "Terjadi kegagalan pada server kami.",

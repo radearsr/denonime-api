@@ -7,23 +7,59 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Role {
-  id_roles  Int     @id @default(autoincrement())
-  role_name String  @db.VarChar(50)
-  user      User[]
+model roles {
+  roleId  Int      @id @default(autoincrement())
+  name    String?  @db.VarChar(50)
+  user    users[]
 }
 
-model User {
-  id        Int     @id @default(autoincrement())
-  firstName String  @db.VarChar(255)
-  lastName  String  @db.VarChar(255)
-  username  String  @db.VarChar(255)
-  password  String  @db.Text
-  email     String  @db.VarChar(200)
-  role      Role    @relation(fields: [roleId], references: [id_roles])
+model users {
+  id        Int      @id @default(autoincrement())
+  firstName String?  @db.VarChar(255)
+  lastName  String?  @db.VarChar(255)
+  username  String?  @db.VarChar(255)
+  password  String?  @db.Text
+  email     String?  @db.VarChar(200)
+  role      roles     @relation(fields: [roleId], references: [roleId])
   roleId    Int   
 }
 
-model Authentication {
+model authentications {
   token  String  @unique
+}
+
+model animes {
+  animeId       Int           @id @default(autoincrement())
+  title         String?       @db.VarChar(100)
+  description   String?       @db.Text
+  poster        String?       @db.VarChar(100)
+  type          AnimeType     @default(Series)
+  releaseDate   DateTime      @db.Date
+  status        StatusUpdate  @default(Completed)
+  slug          String?       @db.VarChar(100)
+  anime_genres  anime_genres[]
+}
+
+model genres {
+  genreId     Int      @id @default(autoincrement())
+  name        String?  @db.VarChar(50)
+  anime_genres  anime_genres[]
+}
+
+model anime_genres {
+  id      Int       @id @default(autoincrement())
+  Anime   animes    @relation(fields: [animeId], references: [animeId])
+  Genre   genres    @relation(fields: [genreId], references: [genreId])    
+  animeId Int
+  genreId Int
+}
+
+enum StatusUpdate {
+  Ongoing
+  Completed
+}
+
+enum AnimeType {
+  Movie
+  Series
 }

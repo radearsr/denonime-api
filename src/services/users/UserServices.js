@@ -6,17 +6,17 @@ const AuthenticationError = require("../../exceptions/AuthenticationError");
 const prisma = new PrismaClient();
 
 exports.verifyNewUsername = async (username) => {
-  const availableUsername = await prisma.user.findFirst({
+  const availableUsername = await prisma.users.findFirst({
     where: { username },
   });
-  if (availableUsername.length >= 1) {
+  if (availableUsername?.length >= 1) {
     throw new InvariantError("Gagal menambahkan user baru, username sudah digunakan");
   }
 };
 
 exports.addUser = async (payload) => {
   const hashedPassword = await bcrypt.hash(payload.password, 10);
-  const addedUser = await prisma.user.create({
+  const addedUser = await prisma.users.create({
     data: {
       firstName: payload.first_name,
       lastName: payload.last_name,
@@ -26,8 +26,8 @@ exports.addUser = async (payload) => {
       email: payload.email,
     },
   });
-  const role = await prisma.role.findUnique({
-    where: { id_roles: 2 },
+  const roles = await prisma.roles.findUnique({
+    where: { roleId: 2 },
   });
   if (addedUser.id < 1) {
     throw new InvariantError("User gagal ditambahkan");
@@ -35,12 +35,12 @@ exports.addUser = async (payload) => {
   return {
     userId: addedUser.id,
     username: addedUser.username,
-    role: role.role_name,
+    role: roles.role_name,
   };
 };
 
 exports.verifyAvailableUser = async (username) => {
-  const availableUser = await prisma.user.findFirst({
+  const availableUser = await prisma.users.findFirst({
     where: { username },
   });
   if (availableUser === null) {
@@ -49,7 +49,7 @@ exports.verifyAvailableUser = async (username) => {
 };
 
 exports.verifyUserCredential = async (username, password) => {
-  const availableUsername = await prisma.user.findFirst({
+  const availableUsername = await prisma.users.findFirst({
     where: { username },
   });
   if (!availableUsername) {

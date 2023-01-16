@@ -1,8 +1,8 @@
 const ClientError = require("../../../exceptions/ClientError");
 const validator = require("../../../validators/authentications");
-const UserServices = require("../../../services/users/UserServices");
-const AutenticationService = require("../../../services/authentications/AuthenticationService");
+const services = require("../../../services/authentications/AuthenticationService");
 const tokens = require("../../../tokens/TokenManager");
+const UserServices = require("../../../services/users/UserServices");
 
 exports.postUserAuthentication = async (req, res) => {
   try {
@@ -14,7 +14,7 @@ exports.postUserAuthentication = async (req, res) => {
     const accessToken = tokens.generateAccessToken({ userId, roleId });
     const refreshToken = tokens.generateRefreshToken({ userId, roleId });
 
-    await AutenticationService.addRefreshToken(refreshToken);
+    await services.addRefreshToken(refreshToken);
 
     return res.status(201).send({
       status: "success",
@@ -45,7 +45,7 @@ exports.putAccessToken = async (req, res) => {
 
     const { refreshToken } = req.body;
 
-    await AutenticationService.verifyRefreshToken(refreshToken);
+    await services.verifyRefreshToken(refreshToken);
     const { userId, roleId } = tokens.verifyRefreshToken(refreshToken);
 
     const accessToken = tokens.generateAccessToken({ userId, roleId });
@@ -76,8 +76,8 @@ exports.deleteRefreshToken = async (req, res) => {
     validator.validateTokenPayload(req.body);
     const { refreshToken } = req.body;
 
-    await AutenticationService.verifyRefreshToken(refreshToken);
-    await AutenticationService.deleteRefreshToken(refreshToken);
+    await services.verifyRefreshToken(refreshToken);
+    await services.deleteRefreshToken(refreshToken);
 
     return res.send({
       status: "success",

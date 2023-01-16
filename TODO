@@ -5,10 +5,10 @@ ORM WITH PRISMA:
   ✔ Build Model Users @done(23-01-12 07:57)
   ✔ Build Model Tokens @done(23-01-12 07:58)
   ✔ Build Model Roles @done(23-01-12 07:58)
-  ☐ Build Model Animes
+  ✔ Build Model Animes @done(23-01-16 07:25)
   ☐ Build Model Episodes
-  ☐ Build Model Genres
-  ☐ Build Model Anime Genres
+  ✔ Build Model Genres @done(23-01-16 07:25)
+  ✔ Build Model Anime Genres @done(23-01-16 07:25)
   ☐ Build Model Anime Episodes
 
 FEATURE REGISTER USERS:
@@ -37,3 +37,30 @@ FEATURE DELETE REFRESH TOKEN / LOGOUT:
   ✔ Validation Refresh Token With Server @done(23-01-15 07:42)
   ✔ Is Available RefreshToken Remove @done(23-01-15 07:42)
   ✔ Response Success Remove @done(23-01-15 07:42)
+
+FEATURE ADD ANIME:
+  ☐ Check Status Login User
+  ☐ Check Roles User (Allow (Admin / Editor))
+  ☐ Verify Payload  
+  ☐ Generate Slug
+  ☐ Field Add To Anime Table
+  ☐ Sort And Verify With Genre, if match insert genre id and anime id to table animegenres
+  ☐ Response id and slug anime
+
+FEATURE EDIT ANIME:
+  ☐ Check Params Id
+  ☐ Check Status Login User
+  ☐ Check Roles User (Allow (Admin / Editor))
+  ☐ Verify Payload
+  ☐ Field Edit To Anime Table
+  ☐ Verify Genre
+  ☐ Response Updated
+
+FEATURE DELETE ANIME:
+  ☐ Check Param Id
+  ☐ Check Status Login user
+  ☐ Check Roles User (Allow (Admin / Editor))
+  ☐ Delete Anime By Id
+  ☐ Short All AnimeGenres And Delete Where ID Math With Anime ID
+  ☐ Respose Deleted  
+

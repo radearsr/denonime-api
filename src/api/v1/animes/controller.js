@@ -8,12 +8,13 @@ exports.postAnimeController = async (req, res) => {
     const authHeader = req.headers.authorization || req.headers.Authorization;
     await authenticationServices.verifyAuthorization(authHeader);
     validator.validateAddAnimePayload(req.body);
-    const animeId = await services.addNewAnime(req.body);
-    await services.addGenre(req.body.genre, animeId);
+    const addedAnime = await services.addNewAnime(req.body);
+    await services.addGenre(req.body.genre, addedAnime.animeId);
     return res.send({
       status: "sucess",
       data: {
-        animeId,
+        animeId: addedAnime.animeId,
+        slug: addedAnime.slug,
       },
     });
   } catch (error) {

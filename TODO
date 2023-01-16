@@ -39,13 +39,13 @@ FEATURE DELETE REFRESH TOKEN / LOGOUT:
   ✔ Response Success Remove @done(23-01-15 07:42)
 
 FEATURE ADD ANIME:
-  ☐ Check Status Login User
-  ☐ Check Roles User (Allow (Admin / Editor))
-  ☐ Verify Payload  
-  ☐ Generate Slug
-  ☐ Field Add To Anime Table
-  ☐ Sort And Verify With Genre, if match insert genre id and anime id to table animegenres
-  ☐ Response id and slug anime
+  ✔ Check Status Login User @done(23-01-16 20:17)
+  ✔ Check Roles User (Allow (Admin / Editor)) @done(23-01-16 20:17)
+  ✔ Verify Payload @done(23-01-16 20:17)
+  ✔ Generate Slug @done(23-01-16 20:17)
+  ✔ Field Add To Anime Table @done(23-01-16 20:17)
+  ✔ Sort And Verify With Genre, if match insert genre id and anime id to table animegenres @done(23-01-16 20:17)
+  ✔ Response id and slug anime @done(23-01-16 20:17)
 
 FEATURE EDIT ANIME:
   ☐ Check Params Id

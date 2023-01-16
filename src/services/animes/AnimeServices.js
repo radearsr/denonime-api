@@ -18,7 +18,10 @@ exports.addNewAnime = async (payload) => {
     },
   });
   if (!addedAnime?.animeId) throw new InvariantError("Gagal menambahkan anime");
-  return addedAnime.animeId;
+  return {
+    animeId: addedAnime.animeId,
+    slug: addedAnime.slug,
+  };
 };
 
 exports.addGenre = async (genres, animeId) => {

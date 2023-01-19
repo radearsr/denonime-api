@@ -48,13 +48,13 @@ FEATURE ADD ANIME:
   ✔ Response id and slug anime @done(23-01-16 20:17)
 
 FEATURE EDIT ANIME:
-  ☐ Check Params Id
-  ☐ Check Status Login User
-  ☐ Check Roles User (Allow (Admin / Editor))
-  ☐ Verify Payload
-  ☐ Field Edit To Anime Table
-  ☐ Verify Genre
-  ☐ Response Updated
+  ✔ Check Params Id @done(23-01-19 17:47)
+  ✔ Check Status Login User @done(23-01-19 17:47)
+  ✔ Check Roles User (Allow (Admin / Editor)) @done(23-01-19 17:47)
+  ✔ Verify Payload @done(23-01-19 17:47)
+  ✔ Field Edit To Anime Table @done(23-01-19 17:47)
+  ✔ Verify Genre @done(23-01-19 17:47)
+  ✔ Response Updated @done(23-01-19 17:48)
 
 FEATURE DELETE ANIME:
   ☐ Check Param Id

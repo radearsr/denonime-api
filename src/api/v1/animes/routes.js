@@ -4,6 +4,7 @@ const controller = require("./controller");
 const router = express();
 
 router
-  .post("/", controller.postAnimeController);
+  .post("/", controller.postAnimeController)
+  .put("/:animeId", controller.putAnimeController);
 
 module.exports = router;

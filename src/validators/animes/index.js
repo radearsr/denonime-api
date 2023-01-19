@@ -4,7 +4,7 @@ const {
 } = require("./schema");
 
 const AnimesValidator = {
-  validateAddAnimePayload: (payload) => {
+  validateAnimePayload: (payload) => {
     const validationResult = AddAnimePayloadSchema.validate(payload);
     if (validationResult.error) {
       throw new InvariantError(validationResult.error.message);

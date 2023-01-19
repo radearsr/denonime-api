@@ -6,7 +6,7 @@ ORM WITH PRISMA:
   ✔ Build Model Tokens @done(23-01-12 07:58)
   ✔ Build Model Roles @done(23-01-12 07:58)
   ✔ Build Model Animes @done(23-01-16 07:25)
-  ☐ Build Model Episodes
+  ✔ Build Model Episodes @done(23-01-19 20:41)
   ✔ Build Model Genres @done(23-01-16 07:25)
   ✔ Build Model Anime Genres @done(23-01-16 07:25)
 
@@ -62,4 +62,14 @@ FEATURE DELETE ANIME:
   ✔ Delete Anime By Id @done(23-01-19 20:11)
   ✔ Short All AnimeGenres And Delete Where ID Match With Anime ID @done(23-01-19 20:10)
   ✔ Respose Deleted @done(23-01-19 20:11)
+
+FEATURE ADD EPISODES:
+  ☐ Check Status Login User
+  ☐ Check Roles User (allow (Admin / Editor))
+  ☐ Verify Anime Id
+  ☐ verify Payload Episodes
+  ☐ Insert Episode In Database
+  ☐ Response Success Added Episode
+
+
 

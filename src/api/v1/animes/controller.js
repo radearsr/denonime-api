@@ -63,3 +63,29 @@ exports.putAnimeController = async (req, res) => {
     });
   }
 };
+
+exports.deleteAnimeController = async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization || req.headers.Authorization;
+    await authenticationServices.verifyAuthorization(authHeader);
+    const { animeId } = req.params;
+    await services.verifyAnimeId(animeId);
+    await services.deleteAnimeController(animeId);
+    return res.json({
+      status: "success",
+      message: "Berhasil menghapus anime",
+    });
+  } catch (error) {
+    if (error instanceof ClientError) {
+      return res.status(error.statusCode).send({
+        status: "fail",
+        message: error.message,
+      });
+    }
+    console.error(error);
+    return res.status(500).send({
+      status: "error",
+      message: "Terjadi kegagalan pada server kami.",
+    });
+  }
+};

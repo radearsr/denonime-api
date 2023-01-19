@@ -111,3 +111,12 @@ exports.updateAnimeGenres = async (genres, animeId) => {
     });
   }
 };
+
+exports.deleteAnimeController = async (animeId) => {
+  await prisma.anime_genres.deleteMany({
+    where: { animeId: parseFloat(animeId) },
+  });
+  await prisma.animes.delete({
+    where: { animeId: parseFloat(animeId) },
+  });
+};

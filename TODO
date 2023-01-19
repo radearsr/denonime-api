@@ -9,7 +9,6 @@ ORM WITH PRISMA:
   ☐ Build Model Episodes
   ✔ Build Model Genres @done(23-01-16 07:25)
   ✔ Build Model Anime Genres @done(23-01-16 07:25)
-  ☐ Build Model Anime Episodes
 
 FEATURE REGISTER USERS:
   ✔ Register User @done(23-01-12 07:58)
@@ -57,10 +56,10 @@ FEATURE EDIT ANIME:
   ✔ Response Updated @done(23-01-19 17:48)
 
 FEATURE DELETE ANIME:
-  ☐ Check Param Id
-  ☐ Check Status Login user
-  ☐ Check Roles User (Allow (Admin / Editor))
-  ☐ Delete Anime By Id
-  ☐ Short All AnimeGenres And Delete Where ID Math With Anime ID
-  ☐ Respose Deleted  
+  ✔ Check Param Id @done(23-01-19 20:10)
+  ✔ Check Status Login user @done(23-01-19 20:10)
+  ✔ Check Roles User (Allow (Admin / Editor)) @done(23-01-19 20:10)
+  ✔ Delete Anime By Id @done(23-01-19 20:11)
+  ✔ Short All AnimeGenres And Delete Where ID Match With Anime ID @done(23-01-19 20:10)
+  ✔ Respose Deleted @done(23-01-19 20:11)
 

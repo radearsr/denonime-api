@@ -64,12 +64,25 @@ FEATURE DELETE ANIME:
   ✔ Respose Deleted @done(23-01-19 20:11)
 
 FEATURE ADD EPISODES:
-  ☐ Check Status Login User
-  ☐ Check Roles User (allow (Admin / Editor))
-  ☐ Verify Anime Id
-  ☐ verify Payload Episodes
-  ☐ Insert Episode In Database
-  ☐ Response Success Added Episode
+  ✔ Check Status Login User @done(23-01-20 21:48)
+  ✔ Check Roles User (allow (Admin / Editor)) @done(23-01-20 21:48)
+  ✔ Verify Anime Id @done(23-01-20 21:48)
+  ✔ verify Payload Episodes @done(23-01-20 21:48)
+  ✔ Insert Episode In Database @done(23-01-20 21:48)
+  ✔ Response Success Added Episode @done(23-01-20 21:48)
 
+FEATURE EDIT EPISODES:
+  ✔ Check Status Login User @done(23-01-20 21:49)
+  ✔ Check Roles User (allow (Admin / Editor)) @done(23-01-20 21:49)
+  ✔ Verify Episode Id @done(23-01-20 21:49)
+  ✔ verify Payload Episodes @done(23-01-20 21:50)
+  ✔ Update Episode In Database @done(23-01-20 21:50)
+  ✔ Response Success Edited Episode @done(23-01-20 21:50)
 
+FEATURE DELETE EPISODE:
+  ✔ Check Status Login User @done(23-01-20 21:50)
+  ✔ Check Roles User (allow (Admin / Editor)) @done(23-01-20 21:50)
+  ✔ Verify Episode Id @done(23-01-20 21:50)
+  ✔ Delete Episode In Database @done(23-01-20 21:51)
+  ✔ Response Success Delete Episode @done(23-01-20 21:51)
 

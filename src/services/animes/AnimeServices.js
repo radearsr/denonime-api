@@ -66,7 +66,6 @@ exports.updateAnime = async (payload, animeId) => {
     },
   });
   if (!updatedAnime?.animeId) throw new InvariantError("Gagal memperbarui anime");
-  console.log(updatedAnime);
   return {
     animeId: updatedAnime.animeId,
     slug: updatedAnime.slug,
@@ -119,4 +118,58 @@ exports.deleteAnimeController = async (animeId) => {
   await prisma.animes.delete({
     where: { animeId: parseFloat(animeId) },
   });
+};
+
+exports.readAnimes = async (type, currentPage, pageSize) => {
+  const fixType = type.replace(type[0], type[0].toUpperCase());
+  if (fixType !== "Series" && fixType !== "Movie") {
+    throw new InvariantError(`Maaf data dengan tipe '${fixType}' tidak tersedia, silahkan coba dengan tipe series / movie`);
+  }
+  const totalAnimes = await prisma.animes.count({
+    where: { type: fixType },
+  });
+  const totalPage = Math.ceil(totalAnimes / parseFloat(pageSize));
+  const skipedData = (currentPage * pageSize) - pageSize;
+  const results = await prisma.animes.findMany({
+    skip: skipedData,
+    take: parseFloat(pageSize),
+    where: {
+      type: fixType,
+    },
+    include: {
+      _count: {
+        select: {
+          episodes: true,
+        },
+      },
+      anime_genres: {
+        select: {
+          genre: true,
+        },
+      },
+    },
+    orderBy: {
+      title: "asc",
+    },
+  });
+  const remapResult = results.map((result) => {
+    const mappedGenres = result.anime_genres.map((animeGenre) => animeGenre.genre.name);
+    return {
+      ...result,
+      anime_genres: mappedGenres,
+      episodes: result._count.episodes,
+    };
+  });
+  console.log(remapResult);
+  return {
+    pages: {
+      pageSize: parseFloat(pageSize),
+      currentPage: parseFloat(currentPage),
+      totalCount: totalAnimes,
+      totalPage,
+    },
+    data: {
+      remapResult,
+    },
+  };
 };

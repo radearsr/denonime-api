@@ -86,3 +86,11 @@ FEATURE DELETE EPISODE:
   ✔ Delete Episode In Database @done(23-01-20 21:51)
   ✔ Response Success Delete Episode @done(23-01-20 21:51)
 
+FEATURE GET ANIME:
+  ✔ Check type anime (movie/series) @done(23-01-21 07:49)
+  ✔ Pagination verification, check page @done(23-01-21 07:49)
+  ✔ Create logic to count total page, @done(23-01-21 07:49)
+  ✔ Join to count total episode @done(23-01-21 07:52)
+  ✔ Join to read all genres @done(23-01-21 07:52)
+  ✔ Restructure Relation Name DB @done(23-01-21 08:03)
+  ✔ Restructure result DB to response API @done(23-01-21 08:10)

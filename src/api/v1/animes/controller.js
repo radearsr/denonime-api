@@ -89,3 +89,28 @@ exports.deleteAnimeController = async (req, res) => {
     });
   }
 };
+
+exports.getAnimesController = async (req, res) => {
+  try {
+    const { type, currentpage, pagesize } = req.query;
+    const animes = await services.readAnimes(type, currentpage, pagesize);
+    return res.json({
+      status: "success",
+      message: "Anime berhasil ditampilkan",
+      data: animes.data,
+      pages: animes.pages,
+    });
+  } catch (error) {
+    if (error instanceof ClientError) {
+      return res.status(error.statusCode).send({
+        status: "fail",
+        message: error.message,
+      });
+    }
+    console.error(error);
+    return res.status(500).send({
+      status: "error",
+      message: "Terjadi kegagalan pada server kami.",
+    });
+  }
+};

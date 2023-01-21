@@ -13,6 +13,7 @@
     "rules": {
         "quotes": ["error", "double"],
         "linebreak-style": ["off", "windows"],
-        "no-console": "off"
+        "no-console": "off",
+        "no-underscore-dangle": "off"
     }
 }

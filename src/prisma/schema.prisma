@@ -47,13 +47,13 @@ model animes {
 model genres {
   genreId       Int             @id @default(autoincrement())
   name          String?         @db.VarChar(50)
-  anime_genres  anime_genres[]
+  animeGenres  anime_genres[]
 }
 
 model anime_genres {
   id            Int             @id @default(autoincrement())
-  Anime         animes          @relation(fields: [animeId], references: [animeId])
-  Genre         genres          @relation(fields: [genreId], references: [genreId])    
+  anime         animes          @relation(fields: [animeId], references: [animeId])
+  genre         genres          @relation(fields: [genreId], references: [genreId])    
   animeId       Int
   genreId       Int
 }

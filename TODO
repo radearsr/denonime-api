@@ -96,5 +96,10 @@ FEATURE GET ANIME:
   ✔ Restructure result DB to response API @done(23-01-21 08:10)
 
 FEATURE GET EPISODE:
-  ☐ Check available slug in database
-  ☐ Get Id anime and join with episode
+  ✔ Check available slug in database @done(23-01-22 20:45)
+  ✔ Get Id anime and join with episode @done(23-01-22 20:45)
+
+FEATURE GET EPISODE BY ID: 
+  ✔ Check available id episode @done(23-01-22 21:10)
+  ✔ Get episode by id episode @done(23-01-22 21:10)
+  ✔ Response detail episode @done(23-01-22 21:10)

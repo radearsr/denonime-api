@@ -58,3 +58,12 @@ exports.deleteEpisode = async (episodeId) => {
   });
   if (deletedEpisode.count < 1) throw new InvariantError("Gagal menghapus data episode");
 };
+
+exports.getEpisodesByAnimeId = async (animeId) => {
+  const animeEpisodes = await prisma.episodes.findMany({
+    where: {
+      animeId,
+    },
+  });
+  return animeEpisodes;
+};

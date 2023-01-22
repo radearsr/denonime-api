@@ -94,3 +94,7 @@ FEATURE GET ANIME:
   ✔ Join to read all genres @done(23-01-21 07:52)
   ✔ Restructure Relation Name DB @done(23-01-21 08:03)
   ✔ Restructure result DB to response API @done(23-01-21 08:10)
+
+FEATURE GET EPISODE:
+  ☐ Check available slug in database
+  ☐ Get Id anime and join with episode

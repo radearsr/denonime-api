@@ -5,6 +5,7 @@ const controller = require("./controller");
 
 router
   .post("/", controller.postAddEpisodes)
+  .get("/:slug", controller.getEpisodesByAnimeSlug)
   .put("/:episodeId", controller.putEditEpisode)
   .delete("/:episodeId", controller.deleteEpisode);
 

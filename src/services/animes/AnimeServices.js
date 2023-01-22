@@ -160,7 +160,6 @@ exports.readAnimes = async (type, currentPage, pageSize) => {
       episodes: result._count.episodes,
     };
   });
-  console.log(remapResult);
   return {
     pages: {
       pageSize: parseFloat(pageSize),
@@ -172,4 +171,15 @@ exports.readAnimes = async (type, currentPage, pageSize) => {
       remapResult,
     },
   };
+};
+
+exports.readIdAnimeByAnimeSlug = async (slug) => {
+  const animeId = await prisma.animes.findFirst({
+    select: {
+      animeId: true,
+    },
+    where: { slug },
+  });
+  if (!animeId) throw new InvariantError(`Gagal mendapatkan episode dengan identitas ${slug}`);
+  return animeId;
 };

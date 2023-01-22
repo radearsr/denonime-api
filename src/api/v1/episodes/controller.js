@@ -1,5 +1,6 @@
 const ClientError = require("../../../exceptions/ClientError");
 const authenticationServices = require("../../../services/authentications/AuthenticationService");
+const animeServices = require("../../../services/animes/AnimeServices");
 const validators = require("../../../validators/episodes");
 const services = require("../../../services/episodes/EpisodeServices");
 
@@ -75,6 +76,35 @@ exports.deleteEpisode = async (req, res) => {
     return res.json({
       status: "success",
       message: "Berhasil menghapus episode",
+    });
+  } catch (error) {
+    if (error instanceof ClientError) {
+      return res.status(error.statusCode).send({
+        status: "fail",
+        message: error.message,
+      });
+    }
+    console.error(error);
+    return res.status(500).send({
+      status: "error",
+      message: "Terjadi kegagalan pada server kami.",
+    });
+  }
+};
+
+exports.getEpisodesByAnimeSlug = async (req, res) => {
+  try {
+    const { slug } = req.params;
+    const { animeId } = await animeServices.readIdAnimeByAnimeSlug(slug);
+    const episodes = await services.getEpisodesByAnimeId(animeId);
+    return res.json({
+      status: "success",
+      message: "Episode ditemukan",
+      data: {
+        slug,
+        animeId,
+        episodes,
+      },
     });
   } catch (error) {
     if (error instanceof ClientError) {

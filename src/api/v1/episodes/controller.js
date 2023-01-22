@@ -100,9 +100,35 @@ exports.getEpisodesByAnimeSlug = async (req, res) => {
       .readAnimeWithDetailsEpisode(slug, parseFloat(episode));
     return res.json({
       status: "success",
-      message: "Episode ditemukan",
+      message: "Anime dengan detail dan episode ditemukan",
       data: {
         ...animeWithEpisode,
+      },
+    });
+  } catch (error) {
+    if (error instanceof ClientError) {
+      return res.status(error.statusCode).send({
+        status: "fail",
+        message: error.message,
+      });
+    }
+    console.error(error);
+    return res.status(500).send({
+      status: "error",
+      message: "Terjadi kegagalan pada server kami.",
+    });
+  }
+};
+
+exports.getEpisodesByAnimeId = async (req, res) => {
+  try {
+    const { animeId } = req.params;
+    const episodes = await services.readAllEpisodesByAnimeId(parseFloat(animeId));
+    return res.json({
+      status: "success",
+      message: `Episode dengan ID ${animeId}`,
+      data: {
+        episodes,
       },
     });
   } catch (error) {

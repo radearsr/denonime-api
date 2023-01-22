@@ -65,3 +65,13 @@ exports.readEpisodeByEpisodeId = async (episodeId) => {
   });
   return episode;
 };
+
+exports.readAllEpisodesByAnimeId = async (animeId) => {
+  const episodes = await prisma.episodes.findMany({
+    where: {
+      animeId,
+    },
+  });
+  if (episodes.length < 1) throw new NotFoundError("Episode tidak ditemukan");
+  return episodes;
+};

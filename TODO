@@ -105,3 +105,8 @@ FEATURE GET EPISODE BY ID:
   ✔ Check available id episode @done(23-01-22 21:10)
   ✔ Get episode by id episode @done(23-01-22 21:10)
   ✔ Response detail episode @done(23-01-22 21:10)
+
+FEATURE GET EPISODE BY ANIME ID:
+  ✔ Check ID Anime @done(23-01-22 22:50)
+  ✔ Get All Episodes By ID Anime @done(23-01-22 22:50)
+  ✔ Response all episodes in match @done(23-01-22 22:50)

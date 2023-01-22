@@ -59,15 +59,6 @@ exports.deleteEpisode = async (episodeId) => {
   if (deletedEpisode.count < 1) throw new InvariantError("Gagal menghapus data episode");
 };
 
-exports.readEpisodesByAnimeId = async (animeId) => {
-  const animeEpisodes = await prisma.episodes.findMany({
-    where: {
-      animeId,
-    },
-  });
-  return animeEpisodes;
-};
-
 exports.readEpisodeByEpisodeId = async (episodeId) => {
   const episode = await prisma.episodes.findUnique({
     where: { id: parseFloat(episodeId) },

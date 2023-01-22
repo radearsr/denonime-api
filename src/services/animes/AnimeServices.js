@@ -173,13 +173,16 @@ exports.readAnimes = async (type, currentPage, pageSize) => {
   };
 };
 
-exports.readIdAnimeByAnimeSlug = async (slug) => {
-  const animeId = await prisma.animes.findFirst({
-    select: {
-      animeId: true,
-    },
+exports.readAnimeWithDetailsEpisode = async (slug, numEpisode) => {
+  const animesWithEpisode = await prisma.animes.findFirst({
     where: { slug },
+    include: {
+      episodes: {
+        where: { numEpisode },
+      },
+    },
   });
-  if (!animeId) throw new InvariantError(`Gagal mendapatkan episode dengan identitas ${slug}`);
-  return animeId;
+  if (!animesWithEpisode) throw new NotFoundError(`Gagal mendapatkan detail anime dengan identitas '${slug}'`);
+  if (animesWithEpisode.episodes.length < 1) throw new NotFoundError(`Episode ${numEpisode} pada anime '${animesWithEpisode.title}' tidak ditemukan`);
+  return animesWithEpisode;
 };

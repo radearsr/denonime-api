@@ -94,16 +94,15 @@ exports.deleteEpisode = async (req, res) => {
 
 exports.getEpisodesByAnimeSlug = async (req, res) => {
   try {
-    const { slug } = req.params;
-    const { animeId } = await animeServices.readIdAnimeByAnimeSlug(slug);
-    const episodes = await services.readEpisodesByAnimeId(animeId);
+    const { fullSlug } = req.params;
+    const [slug, episode] = fullSlug.split("-episode-");
+    const animeWithEpisode = await animeServices
+      .readAnimeWithDetailsEpisode(slug, parseFloat(episode));
     return res.json({
       status: "success",
       message: "Episode ditemukan",
       data: {
-        slug,
-        animeId,
-        episodes,
+        ...animeWithEpisode,
       },
     });
   } catch (error) {

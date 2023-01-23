@@ -114,3 +114,28 @@ exports.getAnimesController = async (req, res) => {
     });
   }
 };
+
+exports.getAnimeByIdController = async (req, res) => {
+  try {
+    const { animeId } = req.params;
+    await services.verifyAnimeId(animeId);
+    const anime = await services.readAnimeById(parseFloat(animeId));
+    return res.json({
+      status: "success",
+      message: "Detail anime berhasil didapatkan",
+      data: { ...anime },
+    });
+  } catch (error) {
+    if (error instanceof ClientError) {
+      return res.status(error.statusCode).send({
+        status: "fail",
+        message: error.message,
+      });
+    }
+    console.error(error);
+    return res.status(500).send({
+      status: "error",
+      message: "Terjadi kegagalan pada server kami.",
+    });
+  }
+};

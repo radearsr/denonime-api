@@ -186,3 +186,10 @@ exports.readAnimeWithDetailsEpisode = async (slug, numEpisode) => {
   if (animesWithEpisode.episodes.length < 1) throw new NotFoundError(`Episode ${numEpisode} pada anime '${animesWithEpisode.title}' tidak ditemukan`);
   return animesWithEpisode;
 };
+
+exports.readAnimeById = async (animeId) => {
+  const anime = await prisma.animes.findUnique({
+    where: { animeId },
+  });
+  return anime;
+};

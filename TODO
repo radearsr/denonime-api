@@ -115,3 +115,8 @@ FEATURE GET ALL EPISODES ORDER BY CREATEDAT DESC:
   ✔ Check result episodes @done(23-01-23 16:30)
   ✔ When length < 1, then response 404 @done(23-01-23 16:31)
   ✔ Response all episodes order by createAt desc @done(23-01-23 16:31)
+
+FEATURE GET ANIME BY ID:
+  ✔ Check available Anime ID @done(23-01-23 17:07)
+  ✔ Get Anime By ID @done(23-01-23 17:07)
+  ✔ Response Result Anime @done(23-01-23 17:07)

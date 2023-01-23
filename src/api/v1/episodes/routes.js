@@ -5,6 +5,7 @@ const controller = require("./controller");
 
 router
   .post("/", controller.postAddEpisodes)
+  .get("/", controller.getAllEpisodes)
   .get("/:fullSlug", controller.getEpisodesByAnimeSlug)
   .get("/:animeId/animes", controller.getEpisodesByAnimeId)
   .get("/:episodeId/details", controller.getEpisodesById)

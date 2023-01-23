@@ -122,12 +122,15 @@ exports.deleteAnimeController = async (animeId) => {
 
 exports.readAnimes = async (type, currentPage, pageSize) => {
   const fixType = type.replace(type[0], type[0].toUpperCase());
+
   if (fixType !== "Series" && fixType !== "Movie") {
     throw new InvariantError(`Maaf data dengan tipe '${fixType}' tidak tersedia, silahkan coba dengan tipe series / movie`);
   }
+
   const totalAnimes = await prisma.animes.count({
     where: { type: fixType },
   });
+
   const totalPage = Math.ceil(totalAnimes / parseFloat(pageSize));
   const skipedData = (currentPage * pageSize) - pageSize;
   const results = await prisma.animes.findMany({
@@ -152,6 +155,7 @@ exports.readAnimes = async (type, currentPage, pageSize) => {
       title: "asc",
     },
   });
+
   const remapResult = results.map((result) => {
     const mappedGenres = result.anime_genres.map((animeGenre) => animeGenre.genre.name);
     return {
@@ -160,6 +164,7 @@ exports.readAnimes = async (type, currentPage, pageSize) => {
       episodes: result._count.episodes,
     };
   });
+
   return {
     pages: {
       pageSize: parseFloat(pageSize),
@@ -192,4 +197,60 @@ exports.readAnimeById = async (animeId) => {
     where: { animeId },
   });
   return anime;
+};
+
+exports.readAnimesByTitle = async (keyword, currentPage, pageSize) => {
+  const totalAnimes = await prisma.animes.count({
+    where: {
+      title: { contains: keyword },
+    },
+  });
+
+  if (totalAnimes.length < 1) throw new NotFoundError(`Anime dengan kata kunci '${keyword}' tidak ditemukan`);
+
+  const totalPage = Math.ceil(totalAnimes / parseFloat(pageSize));
+  const skipedData = (currentPage * pageSize) - pageSize;
+
+  const results = await prisma.animes.findMany({
+    skip: skipedData,
+    take: pageSize,
+    where: {
+      title: { contains: keyword },
+    },
+    include: {
+
+      _count: {
+        select: {
+          episodes: true,
+        },
+      },
+      anime_genres: {
+        select: {
+          genre: true,
+        },
+      },
+    },
+    orderBy: {
+      title: "asc",
+    },
+  });
+
+  const remapResult = results.map(({ _count: episodes, ...result }) => {
+    const mappedGenres = result.anime_genres.map((animeGenre) => animeGenre.genre.name);
+    return {
+      ...result,
+      ...episodes,
+      anime_genres: mappedGenres,
+    };
+  });
+
+  return {
+    data: remapResult,
+    pages: {
+      pageSize: parseFloat(pageSize),
+      currentPage: parseFloat(currentPage),
+      totalCount: totalAnimes,
+      totalPage,
+    },
+  };
 };

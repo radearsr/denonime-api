@@ -120,3 +120,13 @@ FEATURE GET ANIME BY ID:
   ✔ Check available Anime ID @done(23-01-23 17:07)
   ✔ Get Anime By ID @done(23-01-23 17:07)
   ✔ Response Result Anime @done(23-01-23 17:07)
+
+FEARURE GET ANIME BY SEARCH TITLE WITH PANIGATION:
+  ✔ Check available title @done(23-01-23 18:04)
+  ✔ When length < 1, then response 404 @done(23-01-23 18:05)
+  ✔ Get Anime by search with title @done(23-01-23 18:05)
+  ✔ Create logic to count total page, @done(23-01-23 18:06)
+  ✔ Join to count total episode @done(23-01-23 18:06)
+  ✔ Join to read all genres @done(23-01-23 18:06)
+  ✔ Restructure Relation Name DB @done(23-01-23 18:06)
+  ✔ Restructure result DB to response API @done(23-01-23 18:06)

@@ -9,6 +9,7 @@ ORM WITH PRISMA:
   ✔ Build Model Episodes @done(23-01-19 20:41)
   ✔ Build Model Genres @done(23-01-16 07:25)
   ✔ Build Model Anime Genres @done(23-01-16 07:25)
+  ✔ Build Model Carousel Anime @done(23-01-24 07:56)
 
 FEATURE REGISTER USERS:
   ✔ Register User @done(23-01-12 07:58)
@@ -130,3 +131,26 @@ FEARURE GET ANIME BY SEARCH TITLE WITH PANIGATION:
   ✔ Join to read all genres @done(23-01-23 18:06)
   ✔ Restructure Relation Name DB @done(23-01-23 18:06)
   ✔ Restructure result DB to response API @done(23-01-23 18:06)
+
+FEATURE ADD CAROUSEL CONTENT:
+  ✔ Check User Status Login @done(23-01-24 07:13)
+  ✔ Check User Role  (Allow Editor & Admin) @done(23-01-24 07:13)
+  ✔ Create Payload Validation @done(23-01-24 06:57)
+  ✔ Verify Id Anime @done(23-01-24 07:56)
+  ✔ Insert Carousel To Database @done(23-01-24 07:56)
+  ✔ Response Success Created @done(23-01-24 07:56)
+
+FEATURE EDIT CAROUSEL CONTENT:
+  ☐ Check User Status Login
+  ☐ Check User Role (Allow Editor & Admin)
+  ☐ Check Payload
+  ☐ Check Available Id Carousel
+  ☐ Update Carousel To Database
+  ☐ Response Success To Updated
+
+FEATURE DELETE CAROUSEL CONTENT:
+  ☐ Check User Status Login
+  ☐ Check User Role (Allow Editor & Admin)
+  ☐ Check Available Id Carousel
+  ☐ Delete carousel from database
+  ☐ Response success to deleted

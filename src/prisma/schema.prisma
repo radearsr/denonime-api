@@ -70,6 +70,21 @@ model episodes {
   publish       StatusPublish   @default(Publish)
 }
 
+model carousel {
+  id            Int             @id @default(autoincrement())
+  title         String          @db.VarChar(100)
+  description   String          @db.Text
+  type          AnimeType
+  slug          String          @db.VarChar(100)
+  poster        String          @db.VarChar(100)
+  background    String          @db.VarChar(100)
+  episodes      Int
+  releaseDate   DateTime        @db.Date()
+  animeId       Int             @db.Int()
+  published     StatusPublish   @default(Publish)
+  createdAt     DateTime        @default(now())
+}
+
 enum StatusUpdate {
   Ongoing
   Completed

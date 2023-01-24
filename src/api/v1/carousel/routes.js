@@ -4,6 +4,7 @@ const controller = require("./controller");
 const router = express.Router();
 
 router
-  .post("/", controller.postCarouselController);
+  .post("/", controller.postCarouselController)
+  .put("/:carouselId", controller.putCarouselController);
 
 module.exports = router;

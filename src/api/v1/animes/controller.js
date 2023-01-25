@@ -171,3 +171,26 @@ exports.getAnimeBySearch = async (req, res) => {
     });
   }
 };
+
+exports.getAllAnimesController = async (req, res) => {
+  try {
+    const allAnimes = await services.readAllAnimes();
+    return res.json({
+      status: "success",
+      message: "Berhasil menampilkan semua anime",
+      data: allAnimes,
+    });
+  } catch (error) {
+    if (error instanceof ClientError) {
+      return res.status(error.statusCode).send({
+        status: "fail",
+        message: error.message,
+      });
+    }
+    console.error(error);
+    return res.status(500).send({
+      status: "error",
+      message: "Terjadi kegagalan pada server kami.",
+    });
+  }
+};

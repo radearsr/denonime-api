@@ -5,6 +5,7 @@ const router = express();
 
 router
   .get("/", controller.getAnimesController)
+  .get("/list", controller.getAllAnimesController)
   .get("/search", controller.getAnimeBySearch)
   .get("/:animeId", controller.getAnimeByIdController)
   .post("/", controller.postAnimeController)

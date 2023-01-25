@@ -118,3 +118,26 @@ exports.getCarouselController = async (req, res) => {
     });
   }
 };
+
+exports.getAllCarouselController = async (req, res) => {
+  try {
+    const carousels = await services.readCarousel();
+    return res.json({
+      status: "success",
+      message: "Berhasil mendapatkan semua carousel",
+      data: carousels,
+    });
+  } catch (error) {
+    if (error instanceof ClientError) {
+      return res.status(error.statusCode).send({
+        status: "fail",
+        message: error.message,
+      });
+    }
+    console.error(error);
+    return res.status(500).send({
+      status: "error",
+      message: "Terjadi kegagalan pada server kami.",
+    });
+  }
+};

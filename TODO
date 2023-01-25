@@ -160,9 +160,11 @@ FEATURE GET CAROUSEL, SORT BY RELEASE DATE, AND TITLE:
   ✔ Sort from database @done(23-01-25 09:13)
   ✔ Response success when data available @done(23-01-25 09:13)
 
-FEATURE GET ALL ANIME AND GENRE:
-  ☐ Create /list endpoint to get name, and id anime or genre
-  ☐ Response success when data available
+FEATURE GET ALL ANIME, GENRE, AND CAROUSEL:
+  ✔ Create /list endpoint to get all animes @done(23-01-26 06:18)
+  ✘ Create /list endpoint to get all episodes @cancelled(23-01-26 06:23)
+  ✔ Create /list endpoint to get all carousel @done(23-01-26 06:30)
+  ✔ Response success when data available @done(23-01-26 06:30)
 
 RENAME FUNCTION NAME IN CONTROLLER AND SERVICE:
   ☐ Rename pattern named in functions

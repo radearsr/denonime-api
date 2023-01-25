@@ -119,3 +119,15 @@ exports.readAllCarousel = async (sortby, currentPage, pageSize) => {
     },
   };
 };
+
+exports.readCarousel = async () => {
+  const result = await prisma.animes.findMany({
+    orderBy: { title: "asc" },
+  });
+
+  if (result.length < 1) {
+    throw new NotFoundError("Carousel tidak ditemukan");
+  }
+
+  return result;
+};

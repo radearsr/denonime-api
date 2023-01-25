@@ -254,3 +254,13 @@ exports.readAnimesByTitle = async (keyword, currentPage, pageSize) => {
     },
   };
 };
+
+exports.readAllAnimes = async () => {
+  const results = await prisma.animes.findMany({
+    orderBy: { title: "asc" },
+  });
+  if (results.length < 1) {
+    throw new NotFoundError("Anime tidak ditemukan");
+  }
+  return results;
+};

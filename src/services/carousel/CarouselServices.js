@@ -72,3 +72,50 @@ exports.deleteCarouselById = async (carouselId) => {
     },
   });
 };
+
+exports.readAllCarousel = async (sortby, currentPage, pageSize) => {
+  if (sortby !== "release" && sortby !== "created" && sortby !== "title") {
+    throw new InvariantError("Sorting tidak tersedia silahkan gunakan release, created, atau title");
+  }
+
+  const createdOrderByMethod = (sortStr) => {
+    if (sortStr === "release") {
+      return { releaseDate: "asc" };
+    }
+    if (sortStr === "created") {
+      return { createdAt: "desc" };
+    }
+    if (sortStr === "title") {
+      return { title: "asc" };
+    }
+    throw new InvariantError("Metode sorting tidak terdaftar");
+  };
+
+  const totalCarousel = await prisma.animes.count({
+    orderBy: { ...createdOrderByMethod(sortby) },
+  });
+
+  const totalPage = Math.ceil(totalCarousel / parseFloat(pageSize));
+  const skipedData = (currentPage * pageSize) - pageSize;
+
+  const carousel = await prisma.carousel.findMany({
+    skip: skipedData,
+    take: parseFloat(pageSize),
+    orderBy: { ...createdOrderByMethod(sortby) },
+  });
+
+  if (carousel.length < 1) {
+    throw new NotFoundError("Carousel tidak ditemukan");
+  }
+
+  return {
+    pages: {
+      totalPage,
+      currentPage: parseFloat(currentPage),
+      pageSize: parseFloat(pageSize),
+    },
+    data: {
+      carousel,
+    },
+  };
+};

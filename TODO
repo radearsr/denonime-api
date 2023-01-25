@@ -156,9 +156,9 @@ FEATURE DELETE CAROUSEL CONTENT:
   ✔ Response success to deleted @done(23-01-25 07:07)
 
 FEATURE GET CAROUSEL, SORT BY RELEASE DATE, AND TITLE:
-  ☐ Check sortby keyword
-  ☐ Sort from database
-  ☐ Response success when data available
+  ✔ Check sortby keyword @done(23-01-25 09:13)
+  ✔ Sort from database @done(23-01-25 09:13)
+  ✔ Response success when data available @done(23-01-25 09:13)
 
 FEATURE GET ALL ANIME AND GENRE:
   ☐ Create /list endpoint to get name, and id anime or genre

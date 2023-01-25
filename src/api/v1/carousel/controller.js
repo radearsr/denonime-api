@@ -93,3 +93,28 @@ exports.deleteCarouselController = async (req, res) => {
     });
   }
 };
+
+exports.getCarouselController = async (req, res) => {
+  try {
+    const { sortby, currentPage, pageSize } = req.query;
+    const carousels = await services.readAllCarousel(sortby, currentPage, pageSize);
+    return res.json({
+      status: "success",
+      message: "Berhasil mendapatkan carousel",
+      data: carousels.data.carousel,
+      pages: { ...carousels.pages },
+    });
+  } catch (error) {
+    if (error instanceof ClientError) {
+      return res.status(error.statusCode).send({
+        status: "fail",
+        message: error.message,
+      });
+    }
+    console.error(error);
+    return res.status(500).send({
+      status: "error",
+      message: "Terjadi kegagalan pada server kami.",
+    });
+  }
+};

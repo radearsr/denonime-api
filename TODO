@@ -149,11 +149,11 @@ FEATURE EDIT CAROUSEL CONTENT:
   ✔ Response Success To Updated @done(23-01-25 06:52)
 
 FEATURE DELETE CAROUSEL CONTENT:
-  ☐ Check User Status Login
-  ☐ Check User Role (Allow Editor & Admin)
-  ☐ Check Available Id Carousel
-  ☐ Delete carousel from database
-  ☐ Response success to deleted
+  ✔ Check User Status Login @done(23-01-25 06:58)
+  ✔ Check User Role (Allow Editor & Admin) @done(23-01-25 06:58)
+  ✔ Check Available Id Carousel @done(23-01-25 06:58)
+  ✔ Delete carousel from database @done(23-01-25 07:07)
+  ✔ Response success to deleted @done(23-01-25 07:07)
 
 FEATURE GET CAROUSEL, SORT BY RELEASE DATE, AND TITLE:
   ☐ Check sortby keyword
@@ -167,3 +167,4 @@ FEATURE GET ALL ANIME AND GENRE:
 RENAME FUNCTION NAME IN CONTROLLER AND SERVICE:
   ☐ Rename pattern named in functions
   ☐ Check again status code response
+  ☐ Check verify success delete and update service

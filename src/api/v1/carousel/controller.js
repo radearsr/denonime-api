@@ -67,3 +67,29 @@ exports.putCarouselController = async (req, res) => {
     });
   }
 };
+
+exports.deleteCarouselController = async (req, res) => {
+  try {
+    const authHeader = req.headers.authorization || req.headers.Authorization;
+    await authenticationServices.verifyAuthorization(authHeader);
+    const { carouselId } = req.params;
+    await services.verifyCarouselId(carouselId);
+    await services.deleteCarouselById(carouselId);
+    return res.json({
+      status: "success",
+      message: "Berhasil menghapus carousel",
+    });
+  } catch (error) {
+    if (error instanceof ClientError) {
+      return res.status(error.statusCode).send({
+        status: "fail",
+        message: error.message,
+      });
+    }
+    console.error(error);
+    return res.status(500).send({
+      status: "error",
+      message: "Terjadi kegagalan pada server kami.",
+    });
+  }
+};

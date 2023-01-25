@@ -5,6 +5,7 @@ const router = express.Router();
 
 router
   .post("/", controller.postCarouselController)
-  .put("/:carouselId", controller.putCarouselController);
+  .put("/:carouselId", controller.putCarouselController)
+  .delete("/:carouselId", controller.deleteCarouselController);
 
 module.exports = router;

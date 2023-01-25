@@ -64,3 +64,11 @@ exports.editCarousel = async (payload, carouselId) => {
     title: editedCarousel.title,
   };
 };
+
+exports.deleteCarouselById = async (carouselId) => {
+  await prisma.carousel.delete({
+    where: {
+      id: parseFloat(carouselId),
+    },
+  });
+};

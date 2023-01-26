@@ -21,4 +21,5 @@ jobs:
         exclude: |
           **/.git*
           **/.git*/**
+          TODO
           **/node_modules/**

@@ -17,9 +17,3 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         dry-run: true
-        dangerous-clean-slate: true
-        exclude: |
-          **/.git*
-          **/.git*/**
-          TODO
-          **/node_modules/**

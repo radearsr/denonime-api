@@ -4,12 +4,12 @@ const router = express();
 const controller = require("./controller");
 
 router
-  .post("/", controller.postAddEpisodes)
-  .get("/", controller.getAllEpisodes)
-  .get("/:fullSlug", controller.getEpisodesByAnimeSlug)
-  .get("/:animeId/animes", controller.getEpisodesByAnimeId)
-  .get("/:episodeId/details", controller.getEpisodesById)
-  .put("/:episodeId", controller.putEditEpisode)
-  .delete("/:episodeId", controller.deleteEpisode);
+  .post("/", controller.postAddEpisodesController)
+  .get("/", controller.getAllEpisodesController)
+  .get("/:fullSlug", controller.getEpisodesByAnimeSlugController)
+  .get("/:animeId/animes", controller.getEpisodesByAnimeIdController)
+  .get("/:episodeId/details", controller.getEpisodesByIdController)
+  .put("/:episodeId", controller.putEditEpisodeController)
+  .delete("/:episodeId", controller.deleteEpisodeController);
 
 module.exports = router;

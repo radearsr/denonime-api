@@ -4,9 +4,9 @@ const controller = require("./controller");
 const router = express.Router();
 
 router
-  .get("/", controller.getCarouselController)
-  .get("/list", controller.getAllCarouselController)
   .post("/", controller.postCarouselController)
+  .get("/", controller.getCarouselBySortbyWithPaginController)
+  .get("/list", controller.getAllCarouselController)
   .put("/:carouselId", controller.putCarouselController)
   .delete("/:carouselId", controller.deleteCarouselController);
 

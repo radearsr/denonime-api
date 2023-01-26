@@ -4,14 +4,14 @@ const animeServices = require("../../../services/animes/AnimeServices");
 const validators = require("../../../validators/episodes");
 const services = require("../../../services/episodes/EpisodeServices");
 
-exports.postAddEpisodes = async (req, res) => {
+exports.postAddEpisodesController = async (req, res) => {
   try {
     const authHeader = req.headers.authorization || req.headers.Authorization;
     await authenticationServices.verifyAuthorization(authHeader);
     const payload = req.body;
     validators.validateEpisodePayload(payload);
     const addedEpisode = await services.addNewEpisode(payload);
-    return res.json({
+    return res.status(201).json({
       status: "success",
       message: "Berhasil menambahkan episode",
       data: {
@@ -33,7 +33,7 @@ exports.postAddEpisodes = async (req, res) => {
   }
 };
 
-exports.putEditEpisode = async (req, res) => {
+exports.putEditEpisodeController = async (req, res) => {
   try {
     const authHeader = req.headers.authorization || req.headers.Authorization;
     await authenticationServices.verifyAuthorization(authHeader);
@@ -66,7 +66,7 @@ exports.putEditEpisode = async (req, res) => {
   }
 };
 
-exports.deleteEpisode = async (req, res) => {
+exports.deleteEpisodeController = async (req, res) => {
   try {
     const authHeader = req.headers.authorization || req.headers.Authorization;
     await authenticationServices.verifyAuthorization(authHeader);
@@ -92,7 +92,7 @@ exports.deleteEpisode = async (req, res) => {
   }
 };
 
-exports.getEpisodesByAnimeSlug = async (req, res) => {
+exports.getEpisodesByAnimeSlugController = async (req, res) => {
   try {
     const { fullSlug } = req.params;
     const [slug, episode] = fullSlug.split("-episode-");
@@ -120,7 +120,7 @@ exports.getEpisodesByAnimeSlug = async (req, res) => {
   }
 };
 
-exports.getEpisodesByAnimeId = async (req, res) => {
+exports.getEpisodesByAnimeIdController = async (req, res) => {
   try {
     const { animeId } = req.params;
     const episodes = await services.readAllEpisodesByAnimeId(parseFloat(animeId));
@@ -146,7 +146,7 @@ exports.getEpisodesByAnimeId = async (req, res) => {
   }
 };
 
-exports.getEpisodesById = async (req, res) => {
+exports.getEpisodesByIdController = async (req, res) => {
   try {
     const { episodeId } = req.params;
     await services.verifyEpisodeId(episodeId);
@@ -173,7 +173,7 @@ exports.getEpisodesById = async (req, res) => {
   }
 };
 
-exports.getAllEpisodes = async (req, res) => {
+exports.getAllEpisodesController = async (req, res) => {
   try {
     const episodes = await services.readAllEpisodes();
     return res.json({

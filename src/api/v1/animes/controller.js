@@ -10,7 +10,7 @@ exports.postAnimeController = async (req, res) => {
     validator.validateAnimePayload(req.body);
     const addedAnime = await services.addNewAnime(req.body);
     await services.addAnimeGenres(req.body.genre, addedAnime.animeId);
-    return res.send({
+    return res.status(201).json({
       status: "sucess",
       data: {
         animeId: addedAnime.animeId,
@@ -90,14 +90,14 @@ exports.deleteAnimeController = async (req, res) => {
   }
 };
 
-exports.getAnimesController = async (req, res) => {
+exports.getAnimesByTypeWithPaginController = async (req, res) => {
   try {
     const { type, currentpage, pagesize } = req.query;
-    const animes = await services.readAnimes(type, currentpage, pagesize);
+    const animes = await services.readAnimesByTypeWithPagin(type, currentpage, pagesize);
     return res.json({
       status: "success",
       message: "Anime berhasil ditampilkan",
-      data: animes.data,
+      data: animes.data.remapResult,
       pages: animes.pages,
     });
   } catch (error) {
@@ -140,14 +140,14 @@ exports.getAnimeByIdController = async (req, res) => {
   }
 };
 
-exports.getAnimeBySearch = async (req, res) => {
+exports.getAnimeBySearchTitleController = async (req, res) => {
   try {
     const {
       querySearch: keyword,
       currentPage,
       pageSize,
     } = req.query;
-    const animes = await services.readAnimesByTitle(
+    const animes = await services.readAnimesBySearchTitle(
       keyword,
       parseFloat(currentPage),
       parseFloat(pageSize),

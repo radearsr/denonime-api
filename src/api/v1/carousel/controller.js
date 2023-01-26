@@ -94,10 +94,10 @@ exports.deleteCarouselController = async (req, res) => {
   }
 };
 
-exports.getCarouselController = async (req, res) => {
+exports.getCarouselBySortbyWithPaginController = async (req, res) => {
   try {
     const { sortby, currentPage, pageSize } = req.query;
-    const carousels = await services.readAllCarousel(sortby, currentPage, pageSize);
+    const carousels = await services.readCarouselBySortbyWithPagin(sortby, currentPage, pageSize);
     return res.json({
       status: "success",
       message: "Berhasil mendapatkan carousel",

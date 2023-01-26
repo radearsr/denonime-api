@@ -120,7 +120,7 @@ exports.deleteAnimeController = async (animeId) => {
   });
 };
 
-exports.readAnimes = async (type, currentPage, pageSize) => {
+exports.readAnimesByTypeWithPagin = async (type, currentPage, pageSize) => {
   const fixType = type.replace(type[0], type[0].toUpperCase());
 
   if (fixType !== "Series" && fixType !== "Movie") {
@@ -156,12 +156,12 @@ exports.readAnimes = async (type, currentPage, pageSize) => {
     },
   });
 
-  const remapResult = results.map((result) => {
+  const remapResult = results.map(({ _count: episodes, ...result }) => {
     const mappedGenres = result.anime_genres.map((animeGenre) => animeGenre.genre.name);
     return {
       ...result,
+      episodes: episodes.episodes,
       anime_genres: mappedGenres,
-      episodes: result._count.episodes,
     };
   });
 
@@ -199,7 +199,7 @@ exports.readAnimeById = async (animeId) => {
   return anime;
 };
 
-exports.readAnimesByTitle = async (keyword, currentPage, pageSize) => {
+exports.readAnimesBySearchTitle = async (keyword, currentPage, pageSize) => {
   const totalAnimes = await prisma.animes.count({
     where: {
       title: { contains: keyword },

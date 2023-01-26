@@ -167,6 +167,9 @@ FEATURE GET ALL ANIME, GENRE, AND CAROUSEL:
   ✔ Response success when data available @done(23-01-26 06:30)
 
 RENAME FUNCTION NAME IN CONTROLLER AND SERVICE:
-  ☐ Rename pattern named in functions
-  ☐ Check again status code response
-  ☐ Check verify success delete and update service
+  ✔ Rename pattern named in functions @done(23-01-26 07:17)
+  ✔ Check again status code response @done(23-01-26 07:17)
+  ✘ Check verify success delete and update service @cancelled(23-01-26 07:20)
+
+#1 Testing Deploy:
+  1. Hosting In Cpanel

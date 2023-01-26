@@ -4,7 +4,7 @@ const services = require("../../../services/authentications/AuthenticationServic
 const tokens = require("../../../tokens/TokenManager");
 const UserServices = require("../../../services/users/UserServices");
 
-exports.postUserAuthentication = async (req, res) => {
+exports.postUserAuthenticationController = async (req, res) => {
   try {
     validator.validateLoginPayload(req.body);
 
@@ -39,7 +39,7 @@ exports.postUserAuthentication = async (req, res) => {
   }
 };
 
-exports.putAccessToken = async (req, res) => {
+exports.putAccessTokenController = async (req, res) => {
   try {
     validator.validateTokenPayload(req.body);
 
@@ -71,7 +71,7 @@ exports.putAccessToken = async (req, res) => {
   }
 };
 
-exports.deleteRefreshToken = async (req, res) => {
+exports.deleteRefreshTokenController = async (req, res) => {
   try {
     validator.validateTokenPayload(req.body);
     const { refreshToken } = req.body;

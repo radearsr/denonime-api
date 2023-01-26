@@ -4,8 +4,8 @@ const controller = require("./controller");
 const router = express.Router();
 
 router
-  .post("/", controller.postUserAuthentication)
-  .put("/", controller.putAccessToken)
-  .delete("/", controller.deleteRefreshToken);
+  .post("/", controller.postUserAuthenticationController)
+  .put("/", controller.putAccessTokenController)
+  .delete("/", controller.deleteRefreshTokenController);
 
 module.exports = router;

@@ -73,7 +73,7 @@ exports.deleteCarouselById = async (carouselId) => {
   });
 };
 
-exports.readAllCarousel = async (sortby, currentPage, pageSize) => {
+exports.readCarouselBySortbyWithPagin = async (sortby, currentPage, pageSize) => {
   if (sortby !== "release" && sortby !== "created" && sortby !== "title") {
     throw new InvariantError("Sorting tidak tersedia silahkan gunakan release, created, atau title");
   }
@@ -110,9 +110,10 @@ exports.readAllCarousel = async (sortby, currentPage, pageSize) => {
 
   return {
     pages: {
-      totalPage,
-      currentPage: parseFloat(currentPage),
       pageSize: parseFloat(pageSize),
+      currentPage: parseFloat(currentPage),
+      totalCount: totalCarousel,
+      totalPage,
     },
     data: {
       carousel,

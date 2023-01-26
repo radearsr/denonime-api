@@ -264,3 +264,13 @@ exports.readAllAnimes = async () => {
   }
   return results;
 };
+
+exports.readAllAnimeGenres = async () => {
+  const genres = await prisma.genres.findMany({
+    orderBy: { name: "asc" },
+  });
+  if (genres.length < 1) {
+    throw new NotFoundError("Genre tidak ditemukan");
+  }
+  return genres;
+};

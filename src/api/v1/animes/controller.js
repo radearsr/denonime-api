@@ -194,3 +194,26 @@ exports.getAllAnimesController = async (req, res) => {
     });
   }
 };
+
+exports.getAllAnimeGenresController = async (req, res) => {
+  try {
+    const allAnimeGenres = await services.readAllAnimeGenres();
+    return res.json({
+      status: "success",
+      message: "Berhasil menampilkan semua anime genre",
+      data: allAnimeGenres,
+    });
+  } catch (error) {
+    if (error instanceof ClientError) {
+      return res.status(error.statusCode).send({
+        status: "fail",
+        message: error.message,
+      });
+    }
+    console.error(error);
+    return res.status(500).send({
+      status: "error",
+      message: "Terjadi kegagalan pada server kami.",
+    });
+  }
+};

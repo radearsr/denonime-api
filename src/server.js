@@ -10,6 +10,15 @@ app.use("/api/v1/animes", require("./api/v1/animes"));
 app.use("/api/v1/episodes", require("./api/v1/episodes"));
 app.use("/api/v1/carousel", require("./api/v1/carousel"));
 
+app.get("/", (req, res) => {
+  try {
+    const ipAddress = req.header("x-forwarded-for") || req.socket.remoteAddress;
+    res.send(`<center><h1>Welcome To Denonime API</h1><br>Client From ${ipAddress}<center>`);
+  } catch (error) {
+    res.send("Terjadi Kegagalan pada server cek log...");
+  }
+});
+
 app.all("*", (req, res) => {
   res.status(404);
   res.json({
@@ -18,7 +27,7 @@ app.all("*", (req, res) => {
   });
 });
 
-const port = 5000;
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.info(`http://localhost:${port}`);
 });

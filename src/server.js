@@ -31,5 +31,3 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.info(`http://localhost:${port}`);
 });
-
-module.exports = app;

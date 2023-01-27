@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./src/server.js",
     "start:dev": "nodemon ./src/server.js",
-    "vercel-build": "npx prisma migrate resolve --applied 20230127131324_prod_testing && npx prisma migrate deploy --schema=./src/prisma/schema.prisma && npx prisma generate --schema=./src/prisma/schema.prisma && node ./src/server.js"
+    "vercel-build": "npx prisma migrate resolve --applied 20230127131324_prod_testing --schema=./src/prisma/schema.prisma && npx prisma migrate deploy --schema=./src/prisma/schema.prisma && npx prisma generate --schema=./src/prisma/schema.prisma && node ./src/server.js"
   },
   "keywords": [],
   "author": "",

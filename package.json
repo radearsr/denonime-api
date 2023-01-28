@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./src/server.js",
-    "start:dev": "nodemon ./src/server.js",
+    "start": "node ./src/index.js",
+    "start:dev": "nodemon ./src/index.js",
     "vercel-build": "npx prisma migrate resolve --applied 20230127131324_prod_testing --schema=./src/prisma/schema.prisma && npx prisma migrate deploy --schema=./src/prisma/schema.prisma && npx prisma generate --schema=./src/prisma/schema.prisma"
   },
   "keywords": [],

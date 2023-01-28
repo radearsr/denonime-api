@@ -13,7 +13,7 @@ app.use("/api/v1/carousel", require("./api/v1/carousel"));
 app.get("/", (req, res) => {
   try {
     const ipAddress = req.header("x-forwarded-for") || req.socket.remoteAddress;
-    res.send(`<center><h1>Welcome To Denonime API</h1><br>Client From ${ipAddress}<center>`);
+    res.send(`<center><h1>Welcome To Denonime API</h1><br><h4>Client From ${ipAddress}</h4><center>`);
   } catch (error) {
     res.send("Terjadi Kegagalan pada server cek log...");
   }

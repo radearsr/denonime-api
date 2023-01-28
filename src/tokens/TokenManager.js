@@ -3,8 +3,8 @@ const jwt = require("jsonwebtoken");
 const InvariantError = require("../exceptions/InvariantError");
 
 const tokenManager = {
-  generateAccessToken: (payload) => jwt.sign(payload, process.env.ACCESS_TOKEN_KEY, { expiresIn: "1h" }),
-  generateRefreshToken: (payload) => jwt.sign(payload, process.env.REFRESH_TOKEN_KEY, { expiresIn: "1d" }),
+  generateAccessToken: (payload) => jwt.sign(payload, process.env.ACCESS_TOKEN_KEY, { expiresIn: "1d" }),
+  generateRefreshToken: (payload) => jwt.sign(payload, process.env.REFRESH_TOKEN_KEY, { expiresIn: "7d" }),
   verifyRefreshToken: (token) => {
     try {
       const decoded = jwt.verify(token, process.env.REFRESH_TOKEN_KEY);

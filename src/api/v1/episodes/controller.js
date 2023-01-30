@@ -175,13 +175,16 @@ exports.getEpisodesByIdController = async (req, res) => {
 
 exports.getAllEpisodesController = async (req, res) => {
   try {
-    const episodes = await services.readAllEpisodes();
+    const {
+      currentPage,
+      pageSize,
+    } = req.query;
+    const episodes = await services.readAllEpisodesWithPagin(currentPage, pageSize);
     return res.json({
       status: "success",
       message: "Semua episode ditemukan",
-      data: {
-        episodes,
-      },
+      data: episodes.data,
+      pages: episodes.pages,
     });
   } catch (error) {
     if (error instanceof ClientError) {

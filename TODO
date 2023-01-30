@@ -166,6 +166,7 @@ FEATURE GET ALL ANIME, GENRE, AND CAROUSEL:
   ✔ Create /list endpoint to get all carousel @done(23-01-26 06:30)
   ✔ Response success when data available @done(23-01-26 06:30)
   ✔ Create /list/genres endpoint to get all genres @done(23-01-27 06:09)
+  ☐ Create pagination in get all episodes
 
 RENAME FUNCTION NAME IN CONTROLLER AND SERVICE:
   ✔ Rename pattern named in functions @done(23-01-26 07:17)

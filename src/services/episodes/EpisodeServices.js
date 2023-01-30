@@ -76,10 +76,25 @@ exports.readAllEpisodesByAnimeId = async (animeId) => {
   return episodes;
 };
 
-exports.readAllEpisodes = async () => {
+exports.readAllEpisodesWithPagin = async (currentPage, pageSize) => {
+  const totalEpisodes = await prisma.episodes.count();
+
+  const totalPage = Math.ceil(totalEpisodes / parseFloat(pageSize));
+  const skipedData = (currentPage * pageSize) - pageSize;
+
   const episodes = await prisma.episodes.findMany({
+    take: parseFloat(pageSize),
+    skip: parseFloat(skipedData),
     orderBy: { createdAt: "desc" },
   });
   if (episodes.length < 1) throw new NotFoundError("Episode tidak ditemukan");
-  return episodes;
+  return {
+    data: episodes,
+    pages: {
+      pageSize: parseFloat(pageSize),
+      currentPage: parseFloat(currentPage),
+      totalCount: totalEpisodes,
+      totalPage,
+    },
+  };
 };

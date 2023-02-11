@@ -56,7 +56,7 @@ exports.verifyUserCredential = async (username, password) => {
     throw new AuthenticationError("Username tidak tersedia, mohon untuk registrasi terlebih dahulu");
   }
   const { password: encodedPassword } = availableUsername;
-  const match = await bcrypt.compare(password, encodedPassword);
+  const match = bcrypt.compare(password, encodedPassword);
 
   if (!match) {
     throw new AuthenticationError("Password yang anda masukkan salah");

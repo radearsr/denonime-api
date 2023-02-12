@@ -3,99 +3,88 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model roles {
-  roleId        Int             @id @default(autoincrement())
-  name          String?         @db.VarChar(50)
-  user          users[]
+  id        String             @id @default(auto()) @map("_id") @db.ObjectId 
+  name      String?         
+  user      users[]
 }
 
 model users {
-  id            Int             @id @default(autoincrement())
-  firstName     String?         @db.VarChar(255)
-  lastName      String?         @db.VarChar(255)
-  username      String?         @db.VarChar(255)
-  password      String?         @db.Text
-  email         String?         @db.VarChar(200)
-  role          roles           @relation(fields: [roleId], references: [roleId])
-  roleId        Int
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId 
+  firstName     String?         
+  lastName      String?         
+  username      String?         
+  password      String?         
+  email         String?         
+  role          roles           @relation(fields: [roleId], references: [id])
+  roleId        String          @db.ObjectId
   createdAt     DateTime        @default(now())
 }
 
 model authentications {
-  token         String          @unique
+  id        String          @id @default(auto()) @map("_id") @db.ObjectId 
+  token     String?
 }
 
 model animes {
-  animeId       Int             @id @default(autoincrement())
-  title         String?         @db.VarChar(100)
-  description   String?         @db.Text
-  poster        String?         @db.VarChar(100)
-  type          AnimeType       @default(Series)
+  id            String          @id @default(auto()) @map("_id") @db.ObjectId 
+  title         String?         
+  description   String?         
+  poster        String?         
+  type          String?
   releaseDate   DateTime        @db.Date
-  status        StatusUpdate    @default(Completed)
-  slug          String?         @db.VarChar(100)
-  publish       StatusPublish   @default(Publish)  
-  createdAt     DateTime        @default(now())
+  status        String? 
+  slug          String?         
+  published     Boolean?        
   anime_genres  anime_genres[]
   episodes      episodes[]
+  createdAt     DateTime        @default(now())
 }
 
 model genres {
-  genreId       Int             @id @default(autoincrement())
-  name          String?         @db.VarChar(50)
-  animeGenres  anime_genres[]
+  id            String             @id @default(auto()) @map("_id") @db.ObjectId 
+  name          String?         
+  anime_genres  anime_genres[]
 }
 
 model anime_genres {
-  id            Int             @id @default(autoincrement())
-  anime         animes          @relation(fields: [animeId], references: [animeId])
-  genre         genres          @relation(fields: [genreId], references: [genreId])    
-  animeId       Int
-  genreId       Int
+  id            String          @id @default(auto()) @map("_id") @db.ObjectId 
+  anime         animes          @relation(fields: [animeId], references: [id])
+  genre         genres          @relation(fields: [genreId], references: [id])    
+  animeId       String          @db.ObjectId
+  genreId       String          @db.ObjectId
 }
 
 model episodes {
-  id            Int             @id @default(autoincrement())
+  id            String          @id @default(auto()) @map("_id") @db.ObjectId 
   numEpisode    Int             @db.Int
-  source360p    String          @db.VarChar(200)
-  source480p    String          @db.VarChar(200)
-  source720p    String          @db.VarChar(200)
-  Anime         animes          @relation(fields: [animeId], references: [animeId])
-  animeId       Int
+  source360p    String?          
+  source480p    String?          
+  source720p    String?          
+  result360p    String?          
+  result480p    String?          
+  result720p    String?          
+  anime         animes          @relation(fields: [animeId], references: [id])
+  animeId       String          @db.ObjectId
+  published     Boolean?
   createdAt     DateTime        @default(now())
-  publish       StatusPublish   @default(Publish)
 }
 
 model carousel {
-  id            Int             @id @default(autoincrement())
-  title         String          @db.VarChar(100)
-  description   String          @db.Text
-  type          AnimeType
-  slug          String          @db.VarChar(100)
-  poster        String          @db.VarChar(100)
-  background    String          @db.VarChar(100)
-  episodes      Int
+  id            String          @id @default(auto()) @map("_id") @db.ObjectId 
+  title         String?        
+  description   String?         
+  type          String?
+  slug          String?         
+  poster        String?         
+  background    String?         
+  episodes      Int?
   releaseDate   DateTime        @db.Date()
-  animeId       Int             @db.Int()
-  published     StatusPublish   @default(Publish)
+  animeId       String          @db.ObjectId
+  published     Boolean?
   createdAt     DateTime        @default(now())
-}
-
-enum StatusUpdate {
-  Ongoing
-  Completed
-}
-
-enum AnimeType {
-  Movie
-  Series
-}
-
-enum StatusPublish {
-  Publish
-  NonPublish
 }

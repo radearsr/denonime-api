@@ -27,7 +27,7 @@ model users {
 
 model authentications {
   id        String          @id @default(auto()) @map("_id") @db.ObjectId 
-  token     String?
+  token     String?         @unique
 }
 
 model animes {

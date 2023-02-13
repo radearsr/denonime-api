@@ -9,7 +9,7 @@ exports.verifyNewUsername = async (username) => {
   const availableUsername = await prisma.users.findFirst({
     where: { username },
   });
-  if (availableUsername?.length >= 1) {
+  if (availableUsername?.username === username) {
     throw new InvariantError("Gagal menambahkan user baru, username sudah digunakan");
   }
 };
@@ -22,12 +22,13 @@ exports.addUser = async (payload) => {
       lastName: payload.last_name,
       username: payload.username,
       password: hashedPassword,
-      roleId: 2,
+      roleId: "63e96eeea365e6229adf5e4e",
       email: payload.email,
+      createdAt: new Date().toISOString(),
     },
   });
   const roles = await prisma.roles.findUnique({
-    where: { roleId: 2 },
+    where: { id: "63e96eeea365e6229adf5e4e" },
   });
   if (addedUser.id < 1) {
     throw new InvariantError("User gagal ditambahkan");
@@ -35,7 +36,7 @@ exports.addUser = async (payload) => {
   return {
     userId: addedUser.id,
     username: addedUser.username,
-    role: roles.role_name,
+    role: roles.name,
   };
 };
 

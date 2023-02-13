@@ -32,7 +32,7 @@ exports.postAddCarousel = async (payload) => {
 exports.verifyCarouselId = async (carouselId) => {
   const result = await prisma.carousel.findUnique({
     where: {
-      id: parseFloat(carouselId),
+      id: carouselId,
     },
   });
   if (!result) throw new NotFoundError("ID carousel tidak ditemukan");
@@ -53,7 +53,7 @@ exports.editCarousel = async (payload, carouselId) => {
       type: payload.type,
     },
     where: {
-      id: parseFloat(carouselId),
+      id: carouselId,
     },
   });
   if (!editedCarousel.id) {
@@ -68,7 +68,7 @@ exports.editCarousel = async (payload, carouselId) => {
 exports.deleteCarouselById = async (carouselId) => {
   await prisma.carousel.delete({
     where: {
-      id: parseFloat(carouselId),
+      id: carouselId,
     },
   });
 };

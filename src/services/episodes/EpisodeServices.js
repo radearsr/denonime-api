@@ -7,15 +7,18 @@ const prisma = new PrismaClient();
 exports.addNewEpisode = async (payload) => {
   const addedEpisode = await prisma.episodes.create({
     data: {
-      numEpisode: parseFloat(payload.numEpisode),
+      numEpisode: payload.numEpisode,
       source360p: payload.source360p,
       source480p: payload.source480p,
       source720p: payload.source720p,
-      animeId: parseFloat(payload.animeId),
-      publish: payload.publishStatus,
+      result360p: payload.result360p,
+      result480p: payload.result480p,
+      result720p: payload.result720p,
+      animeId: payload.animeId,
+      published: payload.published,
     },
   });
-  if (addedEpisode.id < 1) throw new InvariantError("Gagal menambahkan episode ke database");
+  if (!addedEpisode.id) throw new InvariantError("Gagal menambahkan episode ke database");
   return {
     animeId: addedEpisode.animeId,
     episodeId: addedEpisode.id,
@@ -25,7 +28,7 @@ exports.addNewEpisode = async (payload) => {
 
 exports.verifyEpisodeId = async (episodeId) => {
   const filteredEpisode = await prisma.episodes.findUnique({
-    where: { id: parseFloat(episodeId) },
+    where: { id: episodeId },
   });
   if (!filteredEpisode) throw new NotFoundError("ID episode tidak ditemukan");
 };
@@ -33,18 +36,21 @@ exports.verifyEpisodeId = async (episodeId) => {
 exports.editEpisode = async (payload, episodeId) => {
   const editedEpisode = await prisma.episodes.update({
     data: {
-      numEpisode: parseFloat(payload.numEpisode),
+      animeId: payload.animeId,
+      numEpisode: payload.numEpisode,
       source360p: payload.source360p,
       source480p: payload.source480p,
       source720p: payload.source720p,
-      animeId: parseFloat(payload.animeId),
-      publish: payload.publishStatus,
+      result360p: payload.result360p,
+      result480p: payload.result480p,
+      result720p: payload.result720p,
+      published: payload.published,
     },
     where: {
-      id: parseFloat(episodeId),
+      id: episodeId,
     },
   });
-  if (editedEpisode.id < 1) throw new InvariantError("Gagal memperbarui episode");
+  if (!editedEpisode.id) throw new InvariantError("Gagal memperbarui episode");
   return {
     animeId: editedEpisode.animeId,
     episodeId: editedEpisode.id,
@@ -54,14 +60,14 @@ exports.editEpisode = async (payload, episodeId) => {
 
 exports.deleteEpisode = async (episodeId) => {
   const deletedEpisode = await prisma.episodes.delete({
-    where: { id: parseFloat(episodeId) },
+    where: { id: episodeId },
   });
   if (deletedEpisode.count < 1) throw new InvariantError("Gagal menghapus data episode");
 };
 
 exports.readEpisodeByEpisodeId = async (episodeId) => {
   const episode = await prisma.episodes.findUnique({
-    where: { id: parseFloat(episodeId) },
+    where: { id: episodeId },
   });
   return episode;
 };

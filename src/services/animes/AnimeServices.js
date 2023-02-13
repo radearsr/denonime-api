@@ -13,14 +13,15 @@ exports.addNewAnime = async (payload) => {
       description: payload.description,
       poster: payload.poster,
       type: payload.type,
-      releaseDate: new Date().toISOString(),
+      releaseDate: new Date(payload.releaseDate).toISOString(),
       status: payload.status,
       slug,
+      published: true,
     },
   });
-  if (!addedAnime?.animeId) throw new InvariantError("Gagal menambahkan anime");
+  if (!addedAnime.id) throw new InvariantError("Gagal menambahkan anime");
   return {
-    animeId: addedAnime.animeId,
+    animeId: addedAnime.id,
     slug: addedAnime.slug,
   };
 };
@@ -31,11 +32,13 @@ exports.addAnimeGenres = async (genres, animeId) => {
     const result = await prisma.genres.findFirst({
       where: { name: genre.trim() },
     });
+    console.log(result);
     if (result) {
-      return { animeId, genreId: result.genreId };
+      return { animeId, genreId: result.id };
     }
     return "";
   }));
+  console.log(matchesGenre);
   const matchesGenreFiltered = matchesGenre.filter((data) => data !== "");
   await prisma.anime_genres.createMany({
     data: matchesGenreFiltered,
@@ -44,7 +47,7 @@ exports.addAnimeGenres = async (genres, animeId) => {
 
 exports.verifyAnimeId = async (animeId) => {
   const result = await prisma.animes.findUnique({
-    where: { animeId: parseFloat(animeId) },
+    where: { id: animeId },
   });
   if (!result) throw new NotFoundError("ID anime tidak ditemukan");
 };
@@ -53,19 +56,20 @@ exports.updateAnime = async (payload, animeId) => {
   const slug = slugs(payload.title);
   const updatedAnime = await prisma.animes.update({
     where: {
-      animeId: parseFloat(animeId),
+      id: animeId,
     },
     data: {
       title: payload.title,
       description: payload.description,
       poster: payload.poster,
       type: payload.type,
-      releaseDate: new Date().toISOString(),
+      releaseDate: new Date(payload.releaseDate).toISOString(),
       status: payload.status,
       slug,
+      published: payload.published,
     },
   });
-  if (!updatedAnime?.animeId) throw new InvariantError("Gagal memperbarui anime");
+  if (!updatedAnime.id) throw new InvariantError("Gagal memperbarui anime");
   return {
     animeId: updatedAnime.animeId,
     slug: updatedAnime.slug,
@@ -80,11 +84,12 @@ exports.updateAnimeGenres = async (genres, animeId) => {
       where: { name: genre.trim() },
     });
     if (result) {
-      inIdGenres.push(result.genreId);
-      return { animeId: parseFloat(animeId), genreId: result.genreId };
+      inIdGenres.push(result.id);
+      return { animeId, genreId: result.id };
     }
     return "";
   }));
+
   const filteredMatcheGenre = matchesGenre.filter((genre) => genre !== "");
 
   const willBeInsert = await Promise.all(filteredMatcheGenre.map(async (genre) => {
@@ -100,23 +105,25 @@ exports.updateAnimeGenres = async (genres, animeId) => {
 
   const filteredWillBeInsert = willBeInsert.filter((willInsert) => willInsert !== "");
 
-  await prisma.anime_genres.createMany({
-    data: filteredWillBeInsert,
-  });
+  if (filteredWillBeInsert.length >= 1) {
+    await prisma.anime_genres.createMany({
+      data: filteredWillBeInsert,
+    });
+  }
 
   if (inIdGenres.length >= 1) {
     await prisma.anime_genres.deleteMany({
-      where: { genreId: { notIn: inIdGenres }, animeId: parseFloat(animeId) },
+      where: { genreId: { notIn: inIdGenres }, animeId },
     });
   }
 };
 
 exports.deleteAnimeController = async (animeId) => {
   await prisma.anime_genres.deleteMany({
-    where: { animeId: parseFloat(animeId) },
+    where: { animeId },
   });
   await prisma.animes.delete({
-    where: { animeId: parseFloat(animeId) },
+    where: { id: animeId },
   });
 };
 

@@ -173,5 +173,13 @@ RENAME FUNCTION NAME IN CONTROLLER AND SERVICE:
   ✔ Check again status code response @done(23-01-26 07:17)
   ✘ Check verify success delete and update service @cancelled(23-01-26 07:20)
 
+MIGRATION DB FROM SQL TO NO-SQL:
+  ✔ Fix users services (add, edit, delete) @done(23-02-13 17:41)
+  ✔ Fix authentications services (add, edit, delete) @done(23-02-13 17:41)
+  ✔ Fix animes services (add, edit, delete) @done(23-02-13 20:01)
+  ✔ Fix episodes services (add, edit, delete) @done(23-02-13 20:01)
+  ✔ Fix carousel services (add, edit, delete) @done(23-02-13 20:01)
+  ✔ add result360p, result480p, result720p in payload validation episodes @done(23-02-13 17:43)
+
 #1 Testing Deploy:
   1. Hosting In Cpanel

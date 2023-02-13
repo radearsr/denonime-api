@@ -8,7 +8,7 @@ const CarouselPayloadSchema = Joi.object({
   background: Joi.string().required(),
   episodes: Joi.number().required(),
   releaseDate: Joi.string().required(),
-  animeId: Joi.number().required(),
+  animeId: Joi.string().required(),
 });
 
 module.exports = { CarouselPayloadSchema };

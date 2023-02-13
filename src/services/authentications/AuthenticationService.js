@@ -39,7 +39,7 @@ exports.verifyAuthorization = async (headerWithToken) => {
     await prisma.users.findUniqueOrThrow({
       where: { id: userInfo.userId },
     });
-    if (userInfo.roleId === 3) throw new AuthorizationError("Anda tidak berhak untuk mengkses sumber ini");
+    if (userInfo.roleId === "63e978b23148f0aadcd10c29") throw new AuthorizationError("Anda tidak berhak untuk mengkses sumber ini");
     return userInfo;
   } catch (error) {
     throw new InvariantError(error.message);

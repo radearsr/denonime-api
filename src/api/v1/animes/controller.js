@@ -11,7 +11,7 @@ exports.postAnimeController = async (req, res) => {
     const addedAnime = await services.addNewAnime(req.body);
     await services.addAnimeGenres(req.body.genre, addedAnime.animeId);
     return res.status(201).json({
-      status: "sucess",
+      status: "success",
       data: {
         animeId: addedAnime.animeId,
         slug: addedAnime.slug,

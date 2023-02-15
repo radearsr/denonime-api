@@ -8,6 +8,7 @@ const AddAnimePayloadSchema = Joi.object({
   releaseDate: Joi.string().required(),
   genre: Joi.string().required(),
   status: Joi.string().valid("Completed", "Ongoing").required(),
+  published: Joi.boolean().required(),
 });
 
 module.exports = {

@@ -16,7 +16,7 @@ exports.addNewAnime = async (payload) => {
       releaseDate: new Date(payload.releaseDate).toISOString(),
       status: payload.status,
       slug,
-      published: true,
+      published: payload.published,
     },
   });
   if (!addedAnime.id) throw new InvariantError("Gagal menambahkan anime");
@@ -32,13 +32,11 @@ exports.addAnimeGenres = async (genres, animeId) => {
     const result = await prisma.genres.findFirst({
       where: { name: genre.trim() },
     });
-    console.log(result);
     if (result) {
       return { animeId, genreId: result.id };
     }
     return "";
   }));
-  console.log(matchesGenre);
   const matchesGenreFiltered = matchesGenre.filter((data) => data !== "");
   await prisma.anime_genres.createMany({
     data: matchesGenreFiltered,
@@ -63,7 +61,7 @@ exports.updateAnime = async (payload, animeId) => {
       description: payload.description,
       poster: payload.poster,
       type: payload.type,
-      releaseDate: new Date(payload.releaseDate).toISOString(),
+      releaseDate: new Date(payload.releaseDate).toDateString(),
       status: payload.status,
       slug,
       published: payload.published,
@@ -225,7 +223,6 @@ exports.readAnimesBySearchTitle = async (keyword, currentPage, pageSize) => {
       title: { contains: keyword },
     },
     include: {
-
       _count: {
         select: {
           episodes: true,

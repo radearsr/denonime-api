@@ -207,9 +207,9 @@ exports.readAnimeById = async (animeId) => {
 exports.readAnimesBySearchTitle = async (keyword, currentPage, pageSize) => {
   const totalAnimes = await prisma.animes.count({
     where: {
-      title: { 
+      title: {
         contains: keyword.toLowerCase(),
-        mode: "insensitive"
+        mode: "insensitive",
       },
     },
   });
@@ -225,7 +225,7 @@ exports.readAnimesBySearchTitle = async (keyword, currentPage, pageSize) => {
     where: {
       title: {
         contains: keyword.toLowerCase(),
-        mode: "insensitive"
+        mode: "insensitive",
       },
     },
     include: {

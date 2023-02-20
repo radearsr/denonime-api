@@ -174,7 +174,8 @@ exports.getAnimeBySearchTitleController = async (req, res) => {
 
 exports.getAllAnimesController = async (req, res) => {
   try {
-    const allAnimes = await services.readAllAnimes();
+    const { status, type } = req.query;
+    const allAnimes = await services.readAllAnimes(status, type);
     return res.json({
       status: "success",
       message: "Berhasil menampilkan semua anime",

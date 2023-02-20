@@ -259,14 +259,34 @@ exports.readAnimesBySearchTitle = async (keyword, currentPage, pageSize) => {
   };
 };
 
-exports.readAllAnimes = async () => {
+exports.readAllAnimes = async (status, type) => {
+  if ((status !== "ongoing" && status !== "completed") && (type !== "movie" && type !== "series")) {
+    throw new InvariantError("Gagal menampilkan data anda harus mencantumkan status (completed / ongoing) dan type (movie / series)");
+  }
+  const fixStatus = status === "ongoing" ? "Ongoing" : "Completed";
+  const fixType = type === "movie" ? "Movie" : "Series";
+
   const results = await prisma.animes.findMany({
+    select: {
+      id: true,
+      title: true,
+      episodes: true,
+    },
+    where: {
+      status: fixStatus,
+      type: fixType,
+    },
     orderBy: { title: "asc" },
   });
   if (results.length < 1) {
     throw new NotFoundError("Anime tidak ditemukan");
   }
-  return results;
+  const remapResult = results.map((result) => ({
+    id: result.id,
+    title: result.title,
+    totalEps: result.episodes.length,
+  }));
+  return remapResult;
 };
 
 exports.readAllAnimeGenres = async () => {

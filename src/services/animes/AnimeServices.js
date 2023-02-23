@@ -169,11 +169,8 @@ exports.readAnimesByTypeWithPagin = async (type, currentPage, pageSize) => {
       anime_genres: mappedGenres,
     };
   });
-
   return {
-    animes: {
-      remapResult,
-    },
+    data: remapResult,
     pages: {
       pageSize: parseFloat(pageSize),
       currentPage: parseFloat(currentPage),
@@ -255,7 +252,7 @@ exports.readAnimesBySearchTitle = async (keyword, currentPage, pageSize) => {
   });
 
   return {
-    animes: remapResult,
+    data: remapResult,
     pages: {
       pageSize: parseFloat(pageSize),
       currentPage: parseFloat(currentPage),
@@ -381,7 +378,7 @@ exports.readAllAnimeByStatusCompleted = async (currentPage, pageSize) => {
     episodes: completed.episodes.length,
   }));
   return {
-    animes: mappedCompletedAnimes,
+    data: mappedCompletedAnimes,
     pages: {
       pageSize: parseFloat(pageSize),
       currentPage: parseFloat(currentPage),
@@ -431,7 +428,7 @@ exports.readAllAnimeByPopularity = async (currentPage, pageSize) => {
     episodes: populer.episodes.length,
   }));
   return {
-    animes: mappedPopulerAnimes,
+    data: mappedPopulerAnimes,
     pages: {
       pageSize: parseFloat(pageSize),
       currentPage: parseFloat(currentPage),

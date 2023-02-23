@@ -92,12 +92,12 @@ exports.deleteAnimeController = async (req, res) => {
 
 exports.getAnimesByTypeWithPaginController = async (req, res) => {
   try {
-    const { type, currentpage, pagesize } = req.query;
-    const animes = await services.readAnimesByTypeWithPagin(type, currentpage, pagesize);
+    const { type, currentPage, pageSize } = req.query;
+    const animes = await services.readAnimesByTypeWithPagin(type, currentPage, pageSize);
     return res.json({
       status: "success",
       message: "Anime berhasil ditampilkan",
-      data: animes.data.remapResult,
+      data: animes.data,
       pages: animes.pages,
     });
   } catch (error) {
@@ -155,7 +155,8 @@ exports.getAnimeBySearchTitleController = async (req, res) => {
     return res.json({
       status: "success",
       message: `Hasil pencarian anime dengan judul mengandung kata '${keyword}'`,
-      data: { ...animes },
+      data: animes.data,
+      pages: animes.pages,
     });
   } catch (error) {
     if (error instanceof ClientError) {
@@ -253,7 +254,8 @@ exports.getAllAnimeByLastFinishedController = async (req, res) => {
     return res.json({
       status: "success",
       message: "Berhasil menampilkan semua anime baru tamat",
-      data: completedAnimes,
+      data: completedAnimes.data,
+      pages: completedAnimes.pages,
     });
   } catch (error) {
     if (error instanceof ClientError) {
@@ -280,7 +282,8 @@ exports.getAllAnimeByPopulerController = async (req, res) => {
     return res.json({
       status: "success",
       message: "Berhasil menampilkan semua anime populer",
-      data: populerAnimes,
+      data: populerAnimes.data,
+      pages: populerAnimes.pages,
     });
   } catch (error) {
     if (error instanceof ClientError) {

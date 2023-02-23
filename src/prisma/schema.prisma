@@ -37,7 +37,8 @@ model animes {
   poster        String?         
   type          String?
   releaseDate   DateTime        @db.Date
-  status        String? 
+  status        String?
+  rating        Float?
   slug          String?         
   published     Boolean?        
   anime_genres  anime_genres[]
@@ -53,25 +54,25 @@ model genres {
 
 model anime_genres {
   id            String          @id @default(auto()) @map("_id") @db.ObjectId 
-  anime         animes          @relation(fields: [animeId], references: [id])
-  genre         genres          @relation(fields: [genreId], references: [id])    
-  animeId       String          @db.ObjectId
-  genreId       String          @db.ObjectId
+  anime         animes?          @relation(fields: [animeId], references: [id])
+  genre         genres?          @relation(fields: [genreId], references: [id])    
+  animeId       String?          @db.ObjectId
+  genreId       String?          @db.ObjectId
 }
 
 model episodes {
   id            String          @id @default(auto()) @map("_id") @db.ObjectId 
-  numEpisode    Int             @db.Int
+  numEpisode    Int?             @db.Int
   source360p    String?          
   source480p    String?          
   source720p    String?          
   result360p    String?          
   result480p    String?          
   result720p    String?          
-  anime         animes          @relation(fields: [animeId], references: [id])
-  animeId       String          @db.ObjectId
+  anime         animes?          @relation(fields: [animeId], references: [id])
+  animeId       String?          @db.ObjectId
   published     Boolean?
-  createdAt     DateTime        @default(now())
+  createdAt     DateTime?        @default(now())
 }
 
 model carousel {
@@ -83,8 +84,8 @@ model carousel {
   poster        String?         
   background    String?         
   episodes      Int?
-  releaseDate   DateTime        @db.Date()
+  releaseDate   DateTime?        @db.Date()
   animeId       String          @db.ObjectId
   published     Boolean?
-  createdAt     DateTime        @default(now())
+  createdAt     DateTime?        @default(now())
 }

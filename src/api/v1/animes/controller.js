@@ -218,3 +218,81 @@ exports.getAllAnimeGenresController = async (req, res) => {
     });
   }
 };
+
+exports.getAllAnimeByLatestEpsController = async (req, res) => {
+  try {
+    const { take } = req.query;
+    const lastestAnimeEps = await services.readAllAnimeByLastUpdateEps(take);
+    return res.json({
+      status: "success",
+      message: "Berhasil menampilkan semua anime baru update episode",
+      data: lastestAnimeEps,
+    });
+  } catch (error) {
+    if (error instanceof ClientError) {
+      return res.status(error.statusCode).send({
+        status: "fail",
+        message: error.message,
+      });
+    }
+    console.error(error);
+    return res.status(500).send({
+      status: "error",
+      message: "Terjadi kegagalan pada server kami.",
+    });
+  }
+};
+
+exports.getAllAnimeByLastFinishedController = async (req, res) => {
+  try {
+    const {
+      currentPage,
+      pageSize,
+    } = req.query;
+    const completedAnimes = await services.readAllAnimeByStatusCompleted(currentPage, pageSize);
+    return res.json({
+      status: "success",
+      message: "Berhasil menampilkan semua anime baru tamat",
+      data: completedAnimes,
+    });
+  } catch (error) {
+    if (error instanceof ClientError) {
+      return res.status(error.statusCode).send({
+        status: "fail",
+        message: error.message,
+      });
+    }
+    console.error(error);
+    return res.status(500).send({
+      status: "error",
+      message: "Terjadi kegagalan pada server kami.",
+    });
+  }
+};
+
+exports.getAllAnimeByPopulerController = async (req, res) => {
+  try {
+    const {
+      currentPage,
+      pageSize,
+    } = req.query;
+    const populerAnimes = await services.readAllAnimeByPopularity(currentPage, pageSize);
+    return res.json({
+      status: "success",
+      message: "Berhasil menampilkan semua anime populer",
+      data: populerAnimes,
+    });
+  } catch (error) {
+    if (error instanceof ClientError) {
+      return res.status(error.statusCode).send({
+        status: "fail",
+        message: error.message,
+      });
+    }
+    console.error(error);
+    return res.status(500).send({
+      status: "error",
+      message: "Terjadi kegagalan pada server kami.",
+    });
+  }
+};

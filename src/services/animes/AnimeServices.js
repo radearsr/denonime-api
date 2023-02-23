@@ -171,14 +171,14 @@ exports.readAnimesByTypeWithPagin = async (type, currentPage, pageSize) => {
   });
 
   return {
+    animes: {
+      remapResult,
+    },
     pages: {
       pageSize: parseFloat(pageSize),
       currentPage: parseFloat(currentPage),
       totalCount: totalAnimes,
       totalPage,
-    },
-    data: {
-      remapResult,
     },
   };
 };
@@ -255,7 +255,7 @@ exports.readAnimesBySearchTitle = async (keyword, currentPage, pageSize) => {
   });
 
   return {
-    data: remapResult,
+    animes: remapResult,
     pages: {
       pageSize: parseFloat(pageSize),
       currentPage: parseFloat(currentPage),
@@ -303,4 +303,140 @@ exports.readAllAnimeGenres = async () => {
     throw new NotFoundError("Genre tidak ditemukan");
   }
   return genres;
+};
+
+exports.readAllAnimeByLastUpdateEps = async (size) => {
+  const latestUpdateEps = await prisma.episodes.findMany({
+    distinct: ["animeId"],
+    select: {
+      anime: {
+        select: {
+          title: true,
+          slug: true,
+          type: true,
+          poster: true,
+          rating: true,
+          status: true,
+          episodes: true,
+        },
+      },
+    },
+    take: parseFloat(size),
+    skip: 0,
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  const parsingAnimes = latestUpdateEps.map((latest) => ({
+    title: latest.anime.title,
+    poster: latest.anime.poster,
+    slug: latest.anime.slug,
+    type: latest.anime.type,
+    status: latest.anime.status,
+    totalEps: latest.anime.episodes.length,
+  }));
+  if (latestUpdateEps.length < 1) {
+    throw new NotFoundError("Anime dengan episode terbaru tidak ditemukan");
+  }
+  return parsingAnimes;
+};
+
+exports.readAllAnimeByStatusCompleted = async (currentPage, pageSize) => {
+  const totalCompletedAnime = await prisma.animes.count({
+    where: {
+      status: {
+        equals: "Completed",
+      },
+    },
+  });
+
+  if (totalCompletedAnime.length < 1) throw new NotFoundError("Anime dengan status completed tidak ditemukan");
+
+  const totalPage = Math.ceil(totalCompletedAnime / parseFloat(pageSize));
+  const skipedData = (currentPage * pageSize) - pageSize;
+
+  const completedAnime = await prisma.animes.findMany({
+    take: parseFloat(pageSize),
+    skip: parseFloat(skipedData),
+    select: {
+      title: true,
+      poster: true,
+      slug: true,
+      type: true,
+      status: true,
+      rating: true,
+      episodes: true,
+    },
+    where: {
+      status: {
+        equals: "Completed",
+      },
+    },
+    orderBy: {
+      releaseDate: "desc",
+    },
+  });
+  const mappedCompletedAnimes = completedAnime.map((completed) => ({
+    ...completed,
+    episodes: completed.episodes.length,
+  }));
+  return {
+    animes: mappedCompletedAnimes,
+    pages: {
+      pageSize: parseFloat(pageSize),
+      currentPage: parseFloat(currentPage),
+      totalCount: totalCompletedAnime,
+      totalPage,
+    },
+  };
+};
+
+exports.readAllAnimeByPopularity = async (currentPage, pageSize) => {
+  const totalPopuler = await prisma.animes.count({
+    where: {
+      rating: {
+        gt: 0,
+      },
+    },
+  });
+
+  if (totalPopuler.length < 1) throw new NotFoundError("Anime dengan rating lebih dari 0 tidak ditemukan");
+
+  const totalPage = Math.ceil(totalPopuler / parseFloat(pageSize));
+  const skipedData = (currentPage * pageSize) - pageSize;
+
+  const completedAnime = await prisma.animes.findMany({
+    take: parseFloat(pageSize),
+    skip: parseFloat(skipedData),
+    select: {
+      title: true,
+      poster: true,
+      slug: true,
+      type: true,
+      status: true,
+      rating: true,
+      episodes: true,
+    },
+    where: {
+      rating: {
+        gt: 0,
+      },
+    },
+    orderBy: {
+      rating: "desc",
+    },
+  });
+  const mappedPopulerAnimes = completedAnime.map((populer) => ({
+    ...populer,
+    episodes: populer.episodes.length,
+  }));
+  return {
+    animes: mappedPopulerAnimes,
+    pages: {
+      pageSize: parseFloat(pageSize),
+      currentPage: parseFloat(currentPage),
+      totalCount: totalPopuler,
+      totalPage,
+    },
+  };
 };

@@ -95,7 +95,13 @@ exports.deleteEpisodeController = async (req, res) => {
 exports.getEpisodesByAnimeSlugController = async (req, res) => {
   try {
     const { fullSlug } = req.params;
-    const [slug, episode] = fullSlug.split("-episode-");
+    let slug = fullSlug;
+    let episode = 0;
+
+    if (fullSlug.includes("-episode-")) {
+      [slug, episode] = fullSlug.split("-episode-");
+    }
+
     const animeWithEpisode = await animeServices
       .readAnimeWithDetailsEpisode(slug, parseFloat(episode));
     return res.json({

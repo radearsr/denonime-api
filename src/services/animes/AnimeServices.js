@@ -180,7 +180,7 @@ exports.readAnimesByTypeWithPagin = async (type, currentPage, pageSize) => {
   };
 };
 
-exports.readAnimeWithDetailsEpisode = async (slug, numEpisode) => {
+exports.readAnimeWithDetailsEpisode = async (slug, numEpisode = 0) => {
   const animesWithEpisode = await prisma.animes.findFirst({
     where: { slug },
     include: {
@@ -308,6 +308,7 @@ exports.readAllAnimeByLastUpdateEps = async (size) => {
     select: {
       anime: {
         select: {
+          id: true,
           title: true,
           slug: true,
           type: true,
@@ -325,6 +326,7 @@ exports.readAllAnimeByLastUpdateEps = async (size) => {
     },
   });
   const parsingAnimes = latestUpdateEps.map((latest) => ({
+    id: latest.anime.id,
     title: latest.anime.title,
     poster: latest.anime.poster,
     slug: latest.anime.slug,
@@ -356,6 +358,7 @@ exports.readAllAnimeByStatusCompleted = async (currentPage, pageSize) => {
     take: parseFloat(pageSize),
     skip: parseFloat(skipedData),
     select: {
+      id: true,
       title: true,
       poster: true,
       slug: true,

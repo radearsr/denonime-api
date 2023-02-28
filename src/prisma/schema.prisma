@@ -82,7 +82,8 @@ model carousel {
   type          String?
   slug          String?         
   poster        String?         
-  background    String?         
+  background    String?
+  rating        Float?         
   episodes      Int?
   releaseDate   DateTime?        @db.Date()
   animeId       String          @db.ObjectId

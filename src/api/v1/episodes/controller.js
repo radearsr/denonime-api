@@ -129,13 +129,13 @@ exports.getEpisodesByAnimeSlugController = async (req, res) => {
 exports.getEpisodesByAnimeIdController = async (req, res) => {
   try {
     const { animeId } = req.params;
-    const episodes = await services.readAllEpisodesByAnimeId(parseFloat(animeId));
+    const { sortBy } = req.query;
+
+    const episodes = await services.readAllEpisodesByAnimeId(animeId, sortBy);
     return res.json({
       status: "success",
       message: `Episode dengan ID Anime ${animeId} ditemukan`,
-      data: {
-        episodes,
-      },
+      data: episodes,
     });
   } catch (error) {
     if (error instanceof ClientError) {

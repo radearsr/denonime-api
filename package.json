@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./src/index.js",
     "start:dev": "nodemon ./src/index.js",
-    "vercel-build": "npx prisma generate --schema=./src/prisma/schema.prisma"
+    "vercel-build": "npx prisma migrate deploy && npx prisma migrate npx prisma generate --schema=./src/prisma/schema.prisma"
   },
   "keywords": [],
   "author": "",

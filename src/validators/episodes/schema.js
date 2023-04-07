@@ -1,15 +1,14 @@
 const Joi = require("joi");
 
 const EpisodePayloadSchema = Joi.object({
-  animeId: Joi.string().required(),
+  animeId: Joi.number().required(),
+  episodeType: Joi.string().valid("Tv", "Ova").required(),
+  streamStrategy: Joi.string().valid("Otakudesu", "OwnServer").required(),
   numEpisode: Joi.number().required(),
-  source360p: Joi.string().required(),
-  source480p: Joi.string().required(),
-  source720p: Joi.string().required(),
-  result360p: Joi.string().required(),
-  result480p: Joi.string().required(),
-  result720p: Joi.string().required(),
-  published: Joi.boolean().required(),
+  sourceDefault: Joi.string().required(),
+  sourceHd: Joi.string().required(),
+  originalSourceEp: Joi.string().required(),
+  publish: Joi.boolean().required(),
 });
 
 module.exports = { EpisodePayloadSchema };

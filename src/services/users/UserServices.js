@@ -22,13 +22,13 @@ exports.addUser = async (payload) => {
       lastName: payload.last_name,
       username: payload.username,
       password: hashedPassword,
-      roleId: "63e96eeea365e6229adf5e4e",
+      roleId: 1,
       email: payload.email,
       createdAt: new Date().toISOString(),
     },
   });
   const roles = await prisma.roles.findUnique({
-    where: { id: "63e96eeea365e6229adf5e4e" },
+    where: { roleId: 1 },
   });
   if (addedUser.id < 1) {
     throw new InvariantError("User gagal ditambahkan");

@@ -32,7 +32,7 @@ model authentications {
 model animes {
   animeId        Int            @id @default(autoincrement())
   title          String?        @db.VarChar(100)
-  rating         Int
+  rating         Float
   description    String?        @db.Text
   poster         String?        @db.VarChar(100)
   type           AnimeType      @default(Series)

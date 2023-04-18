@@ -142,7 +142,6 @@ exports.deleteAnimeController = async (animeId) => {
 
 exports.readAnimesByTypeWithPagin = async (type, currentPage, pageSize) => {
   const fixType = type.replace(type[0], type[0].toUpperCase());
-
   if (fixType !== "Series" && fixType !== "Movie") {
     throw new InvariantError(`Maaf data dengan tipe '${fixType}' tidak tersedia, silahkan coba dengan tipe series / movie`);
   }
@@ -151,11 +150,11 @@ exports.readAnimesByTypeWithPagin = async (type, currentPage, pageSize) => {
     where: { type: fixType },
   });
 
-  const totalPage = Math.ceil(totalAnimes / parseFloat(pageSize));
+  const totalPage = Math.ceil(totalAnimes / pageSize);
   const skipedData = (currentPage * pageSize) - pageSize;
   const results = await prisma.animes.findMany({
     skip: skipedData,
-    take: parseFloat(pageSize),
+    take: pageSize,
     where: {
       type: fixType,
     },
@@ -180,7 +179,7 @@ exports.readAnimesByTypeWithPagin = async (type, currentPage, pageSize) => {
     const mappedGenres = result.anime_genres.map((animeGenre) => animeGenre.genre.name);
     return {
       ...result,
-      episodes: episodes.episodes,
+      totalEps: episodes.episodes,
       anime_genres: mappedGenres,
     };
   });
@@ -298,4 +297,90 @@ exports.readAllAnimeGenres = async () => {
     throw new NotFoundError("Genre tidak ditemukan");
   }
   return genres;
+};
+
+exports.readAllAnimesLatest = async (size) => {
+  const animeIdLatestUpdateEps = await prisma.episodes.findMany({
+    distinct: ["animeId"],
+    select: {
+      animeId: true,
+    },
+    take: size,
+    skip: 0,
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  const mappedAnimeId = animeIdLatestUpdateEps.map((anime) => (anime.animeId));
+  const animeLatestUpdateEpisode = await prisma.animes.findMany({
+    take: size,
+    skip: 0,
+    where: {
+      animeId: {
+        in: mappedAnimeId,
+      },
+    },
+    include: {
+      _count: true,
+    },
+  });
+  const parsingAnimes = animeLatestUpdateEpisode.map((latest) => ({
+    animeId: latest.animeId,
+    rating: latest.rating,
+    title: latest.title,
+    poster: latest.poster,
+    slug: latest.slug,
+    type: latest.type,
+    status: latest.status,
+    totalEps: latest._count.episodes,
+  }));
+  if (parsingAnimes.length < 1) {
+    throw new NotFoundError("Anime dengan episode terbaru tidak ditemukan");
+  }
+  return parsingAnimes;
+};
+
+exports.readAllAnimesPopular = async (currentPage, pageSize) => {
+  const totalPopuler = await prisma.animes.count({
+    where: {
+      rating: {
+        gt: 0,
+      },
+    },
+  });
+
+  if (totalPopuler.length < 1) throw new NotFoundError("Anime dengan rating lebih dari 0 tidak ditemukan");
+
+  const totalPage = Math.ceil(totalPopuler / parseFloat(pageSize));
+  const skipedData = (currentPage * pageSize) - pageSize;
+
+  const popularAnime = await prisma.animes.findMany({
+    take: parseFloat(pageSize),
+    skip: parseFloat(skipedData),
+    where: {
+      rating: {
+        gt: 0,
+      },
+      status: "Completed",
+    },
+    include: {
+      _count: true,
+    },
+    orderBy: {
+      rating: "desc",
+    },
+  });
+  const mappedPopulerAnimes = popularAnime.map((populer) => ({
+    ...populer,
+    totalEps: populer._count.episodes,
+  }));
+  return {
+    data: mappedPopulerAnimes,
+    pages: {
+      pageSize: parseFloat(pageSize),
+      currentPage: parseFloat(currentPage),
+      totalCount: totalPopuler,
+      totalPage,
+    },
+  };
 };

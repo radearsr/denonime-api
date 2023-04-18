@@ -8,6 +8,8 @@ router
   .get("/", controller.getAnimesByTypeWithPaginController)
   .get("/list", controller.getAllAnimesController)
   .get("/list/genres", controller.getAllAnimeGenresController)
+  .get("/list/latest", controller.getAllAnimeLatestUpdate)
+  .get("/list/finished", controller.getAllAnimePopulerController)
   .get("/search", controller.getAnimeBySearchTitleController)
   .get("/:animeId", controller.getAnimeByIdController)
   .put("/:animeId", controller.putAnimeController)

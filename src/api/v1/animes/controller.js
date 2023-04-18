@@ -92,12 +92,41 @@ exports.deleteAnimeController = async (req, res) => {
 
 exports.getAnimesByTypeWithPaginController = async (req, res) => {
   try {
-    const { type, currentpage, pagesize } = req.query;
-    const animes = await services.readAnimesByTypeWithPagin(type, currentpage, pagesize);
+    const { type, currentPage, pageSize } = req.query;
+    const animes = await services.readAnimesByTypeWithPagin(
+      type,
+      parseFloat(currentPage),
+      parseFloat(pageSize),
+    );
     return res.json({
       status: "success",
       message: "Anime berhasil ditampilkan",
       data: animes.data.remapResult,
+      pages: animes.pages,
+    });
+  } catch (error) {
+    if (error instanceof ClientError) {
+      return res.status(error.statusCode).send({
+        status: "fail",
+        message: error.message,
+      });
+    }
+    console.error(error);
+    return res.status(500).send({
+      status: "error",
+      message: "Terjadi kegagalan pada server kami.",
+    });
+  }
+};
+
+exports.getAllAnimeLatestUpdate = async (req, res) => {
+  try {
+    const { size } = req.query;
+    const animes = await services.readAllAnimesLatest(parseFloat(size));
+    return res.json({
+      status: "success",
+      message: "Anime berhasil ditampilkan",
+      data: animes,
       pages: animes.pages,
     });
   } catch (error) {
@@ -202,6 +231,33 @@ exports.getAllAnimeGenresController = async (req, res) => {
       status: "success",
       message: "Berhasil menampilkan semua anime genre",
       data: allAnimeGenres,
+    });
+  } catch (error) {
+    if (error instanceof ClientError) {
+      return res.status(error.statusCode).send({
+        status: "fail",
+        message: error.message,
+      });
+    }
+    console.error(error);
+    return res.status(500).send({
+      status: "error",
+      message: "Terjadi kegagalan pada server kami.",
+    });
+  }
+};
+
+exports.getAllAnimePopulerController = async (req, res) => {
+  try {
+    const { currentPage, pageSize } = req.query;
+    const animesPopuler = await services.readAllAnimesPopular(
+      parseFloat(currentPage),
+      parseFloat(pageSize),
+    );
+    return res.json({
+      status: "success",
+      message: "Berhasil menampilkan semua anime genre",
+      data: animesPopuler.data,
     });
   } catch (error) {
     if (error instanceof ClientError) {

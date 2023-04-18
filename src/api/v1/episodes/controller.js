@@ -92,12 +92,25 @@ exports.deleteEpisodeController = async (req, res) => {
   }
 };
 
+const splitedSlugs = (text) => {
+  if (!text.includes("-episode-")) {
+    return {
+      slug: text,
+      episode: 1,
+    };
+  }
+  const [slug, episode] = text.split("-episode-");
+  return {
+    slug,
+    episode: parseFloat(episode),
+  };
+};
+
 exports.getEpisodesByAnimeSlugController = async (req, res) => {
   try {
     const { fullSlug } = req.params;
-    const [slug, episode] = fullSlug.split("-episode-");
-    const animeWithEpisode = await animeServices
-      .readAnimeWithDetailsEpisode(slug, parseFloat(episode));
+    const { slug, episode } = splitedSlugs(fullSlug);
+    const animeWithEpisode = await animeServices.readAnimeWithDetailsEpisode(slug, episode);
     return res.json({
       status: "success",
       message: "Anime dengan detail dan episode ditemukan",
@@ -123,7 +136,8 @@ exports.getEpisodesByAnimeSlugController = async (req, res) => {
 exports.getEpisodesByAnimeIdController = async (req, res) => {
   try {
     const { animeId } = req.params;
-    const episodes = await services.readAllEpisodesByAnimeId(parseFloat(animeId));
+    const { sortBy } = req.query;
+    const episodes = await services.readAllEpisodesByAnimeId(parseFloat(animeId), sortBy);
     return res.json({
       status: "success",
       message: `Episode dengan ID Anime ${animeId} ditemukan`,

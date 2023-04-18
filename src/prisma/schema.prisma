@@ -36,7 +36,7 @@ model animes {
   description    String?        @db.Text
   poster         String?        @db.VarChar(100)
   type           AnimeType      @default(Series)
-  originalSource String         @db.VarChar(100)
+  originalSource String         @db.Text
   releaseDate    DateTime       @db.Date
   status         StatusUpdate   @default(Completed)
   slug           String?        @db.VarChar(100)
@@ -65,9 +65,9 @@ model episodes {
   episodeType      EpisodeType   @default(Tv)
   streamStrategy   streamType    @default(OwnServer)
   numEpisode       Int
-  sourceDefault    String        @db.VarChar(200)
-  sourceHd         String        @db.VarChar(200)
-  originalSourceEp String        @db.VarChar(100)
+  sourceDefault    String        @db.Text
+  sourceHd         String        @db.Text
+  originalSourceEp String        @db.Text
   Anime            animes        @relation(fields: [animeId], references: [animeId])
   animeId          Int
   createdAt        DateTime      @default(now())

@@ -301,28 +301,14 @@ exports.readAllAnimeGenres = async () => {
 };
 
 exports.readAllAnimesLatest = async (size) => {
-  const animeIdLatestUpdateEps = await prisma.episodes.findMany({
-    distinct: ["animeId"],
-    select: {
-      animeId: true,
-    },
-    take: size,
-    skip: 0,
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
-  const mappedAnimeId = animeIdLatestUpdateEps.map((anime) => (anime.animeId));
   const animeLatestUpdateEpisode = await prisma.animes.findMany({
     take: size,
     skip: 0,
-    where: {
-      animeId: {
-        in: mappedAnimeId,
-      },
-    },
     include: {
       _count: true,
+    },
+    orderBy: {
+      lastUpdateEpisode: "desc",
     },
   });
   const parsingAnimes = animeLatestUpdateEpisode.map((latest) => ({

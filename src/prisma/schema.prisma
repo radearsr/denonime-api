@@ -18,11 +18,11 @@ model users {
   firstName String?  @db.VarChar(255)
   lastName  String?  @db.VarChar(255)
   username  String?  @db.VarChar(255)
-  password  String?  @db.Text
+  password  String?
   email     String?  @db.VarChar(200)
-  role      roles    @relation(fields: [roleId], references: [roleId])
   roleId    Int
   createdAt DateTime @default(now())
+  role      roles    @relation(fields: [roleId], references: [roleId])
 }
 
 model authentications {
@@ -30,20 +30,21 @@ model authentications {
 }
 
 model animes {
-  animeId        Int            @id @default(autoincrement())
-  title          String?        @db.VarChar(100)
-  rating         Float
-  description    String?        @db.Text
-  poster         String?        @db.VarChar(100)
-  type           AnimeType      @default(Series)
-  originalSource String         @db.Text
-  releaseDate    DateTime       @db.Date
-  status         StatusUpdate   @default(Completed)
-  slug           String?        @db.VarChar(100)
-  publish        StatusPublish  @default(Publish)
-  createdAt      DateTime       @default(now())
-  anime_genres   anime_genres[]
-  episodes       episodes[]
+  animeId           Int            @id @default(autoincrement())
+  title             String?        @db.VarChar(100)
+  rating            Float
+  description       String?
+  poster            String?        @db.VarChar(100)
+  type              AnimeType      @default(Series)
+  originalSource    String         @db.VarChar(100)
+  releaseDate       DateTime       @db.Date
+  status            StatusUpdate   @default(Completed)
+  slug              String?        @db.VarChar(100)
+  publish           StatusPublish  @default(Publish)
+  createdAt         DateTime       @default(now())
+  lastUpdateEpisode DateTime       @default(now()) @db.Timestamp(6)
+  anime_genres      anime_genres[]
+  episodes          episodes[]
 }
 
 model genres {
@@ -54,10 +55,10 @@ model genres {
 
 model anime_genres {
   id      Int    @id @default(autoincrement())
-  anime   animes @relation(fields: [animeId], references: [animeId])
-  genre   genres @relation(fields: [genreId], references: [genreId])
   animeId Int
   genreId Int
+  anime   animes @relation(fields: [animeId], references: [animeId])
+  genre   genres @relation(fields: [genreId], references: [genreId])
 }
 
 model episodes {
@@ -65,27 +66,27 @@ model episodes {
   episodeType      EpisodeType   @default(Tv)
   streamStrategy   streamType    @default(OwnServer)
   numEpisode       Int
-  sourceDefault    String        @db.Text
-  sourceHd         String        @db.Text
-  originalSourceEp String        @db.Text
-  Anime            animes        @relation(fields: [animeId], references: [animeId])
+  sourceDefault    String
+  sourceHd         String
   animeId          Int
   createdAt        DateTime      @default(now())
   publish          StatusPublish @default(Publish)
+  originalSourceEp String
+  Anime            animes        @relation(fields: [animeId], references: [animeId])
 }
 
 model carousel {
   id          Int           @id @default(autoincrement())
   title       String        @db.VarChar(100)
-  description String        @db.Text
+  description String
   type        AnimeType
   slug        String        @db.VarChar(100)
   poster      String        @db.VarChar(100)
   background  String        @db.VarChar(100)
-  releaseDate DateTime      @db.Date()
+  releaseDate DateTime      @db.Date
   animeId     Int
-  publish     StatusPublish @default(Publish)
   createdAt   DateTime      @default(now())
+  publish     StatusPublish @default(Publish)
 }
 
 enum StatusUpdate {

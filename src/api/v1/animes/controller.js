@@ -92,7 +92,7 @@ exports.deleteAnimeController = async (req, res) => {
 
 exports.getAnimesByTypeWithPaginController = async (req, res) => {
   try {
-    const { type, currentPage, pageSize } = req.query;
+    const { type = "series", currentPage = 1, pageSize = 10 } = req.query;
     const animes = await services.readAnimesByTypeWithPagin(
       type,
       parseFloat(currentPage),
@@ -121,7 +121,7 @@ exports.getAnimesByTypeWithPaginController = async (req, res) => {
 
 exports.getAllAnimeLatestUpdate = async (req, res) => {
   try {
-    const { size } = req.query;
+    const { size = 10 } = req.query;
     const animes = await services.readAllAnimesLatest(parseFloat(size));
     return res.json({
       status: "success",
@@ -173,8 +173,8 @@ exports.getAnimeBySearchTitleController = async (req, res) => {
   try {
     const {
       querySearch: keyword,
-      currentPage,
-      pageSize,
+      currentPage = 1,
+      pageSize = 10,
     } = req.query;
     const animes = await services.readAnimesBySearchTitle(
       keyword,
@@ -184,7 +184,8 @@ exports.getAnimeBySearchTitleController = async (req, res) => {
     return res.json({
       status: "success",
       message: `Hasil pencarian anime dengan judul mengandung kata '${keyword}'`,
-      data: { ...animes },
+      data: animes.data,
+      pages: animes.pages,
     });
   } catch (error) {
     if (error instanceof ClientError) {
@@ -249,14 +250,14 @@ exports.getAllAnimeGenresController = async (req, res) => {
 
 exports.getAllAnimePopulerController = async (req, res) => {
   try {
-    const { currentPage, pageSize } = req.query;
+    const { currentPage = 1, pageSize = 10 } = req.query;
     const animesPopuler = await services.readAllAnimesPopular(
       parseFloat(currentPage),
       parseFloat(pageSize),
     );
     return res.json({
       status: "success",
-      message: "Berhasil menampilkan semua anime genre",
+      message: "Berhasil menampilkan semua anime popular",
       data: animesPopuler.data,
     });
   } catch (error) {

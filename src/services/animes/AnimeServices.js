@@ -141,7 +141,7 @@ exports.deleteAnimeController = async (animeId) => {
 };
 
 exports.readAnimesByTypeWithPagin = async (type, currentPage, pageSize) => {
-  console.log({ type, currentPage, pageSize });
+  // console.log({ type, currentPage, pageSize });
   const fixType = type.replace(type[0], type[0].toUpperCase());
   if (fixType !== "Series" && fixType !== "Movie") {
     throw new InvariantError(`Maaf data dengan tipe '${fixType}' tidak tersedia, silahkan coba dengan tipe series / movie`);
@@ -304,6 +304,9 @@ exports.readAllAnimesLatest = async (size) => {
   const animeLatestUpdateEpisode = await prisma.animes.findMany({
     take: size,
     skip: 0,
+    where: {
+      status: "Ongoing",
+    },
     include: {
       _count: true,
     },
@@ -333,6 +336,11 @@ exports.readAllAnimesPopular = async (currentPage, pageSize) => {
       rating: {
         gt: 0,
       },
+      type: "Series",
+      status: "Completed",
+      description: {
+        not: "NULL",
+      },
     },
   });
 
@@ -348,13 +356,17 @@ exports.readAllAnimesPopular = async (currentPage, pageSize) => {
       rating: {
         gt: 0,
       },
+      type: "Series",
       status: "Completed",
+      description: {
+        not: "NULL",
+      },
     },
     include: {
       _count: true,
     },
     orderBy: {
-      rating: "desc",
+      releaseDate: "desc",
     },
   });
   const mappedPopulerAnimes = popularAnime.map((populer) => ({

@@ -259,6 +259,7 @@ exports.getAllAnimePopulerController = async (req, res) => {
       status: "success",
       message: "Berhasil menampilkan semua anime popular",
       data: animesPopuler.data,
+      pages: animesPopuler.pages,
     });
   } catch (error) {
     if (error instanceof ClientError) {

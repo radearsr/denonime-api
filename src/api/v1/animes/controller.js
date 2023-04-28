@@ -90,14 +90,26 @@ exports.deleteAnimeController = async (req, res) => {
   }
 };
 
-exports.getAnimesByTypeWithPaginController = async (req, res) => {
+exports.getAnimesBySpecController = async (req, res) => {
   try {
-    const { type = "series", currentPage = 1, pageSize = 10 } = req.query;
-    const animes = await services.readAnimesByTypeWithPagin(
+    const {
+      type = "Series",
+      status = "Completed",
+      currentPage = 1,
+      pageSize = 10,
+      orderBy,
+      sort,
+    } = req.query;
+
+    const animes = await services.readAnimesWithSpec({
       type,
-      parseFloat(currentPage),
-      parseFloat(pageSize),
-    );
+      status,
+      currentPage: parseFloat(currentPage),
+      pageSize: parseFloat(pageSize),
+      orderBy,
+      sort,
+    });
+
     return res.json({
       status: "success",
       message: "Anime berhasil ditampilkan",
@@ -186,29 +198,6 @@ exports.getAnimeBySearchTitleController = async (req, res) => {
       message: `Hasil pencarian anime dengan judul mengandung kata '${keyword}'`,
       data: animes.data,
       pages: animes.pages,
-    });
-  } catch (error) {
-    if (error instanceof ClientError) {
-      return res.status(error.statusCode).send({
-        status: "fail",
-        message: error.message,
-      });
-    }
-    console.error(error);
-    return res.status(500).send({
-      status: "error",
-      message: "Terjadi kegagalan pada server kami.",
-    });
-  }
-};
-
-exports.getAllAnimesController = async (req, res) => {
-  try {
-    const allAnimes = await services.readAllAnimes();
-    return res.json({
-      status: "success",
-      message: "Berhasil menampilkan semua anime",
-      data: allAnimes,
     });
   } catch (error) {
     if (error instanceof ClientError) {

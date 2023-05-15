@@ -1,10 +1,6 @@
 {
   "name": "denonime-api",
-<<<<<<< HEAD
-  "version": "2.0.4",
-=======
-  "version": "2.2.5",
->>>>>>> 8539dba5761205a948a91e30a5121c3345d4de36
+  "version": "2.2.6",
   "description": "",
   "main": "index.js",
   "scripts": {

@@ -1,10 +1,14 @@
 {
   "name": "denonime-api",
+<<<<<<< HEAD
   "version": "2.0.4",
+=======
+  "version": "2.2.5",
+>>>>>>> 8539dba5761205a948a91e30a5121c3345d4de36
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npx prisma migrate deploy --schema=./src/prisma/schema.prisma && npx prisma generate --schema=./src/prisma/schema.prisma",
+    "build": "npx prisma db pull --schema=./src/prisma/schema.prisma && npx prisma generate --schema=./src/prisma/schema.prisma",
     "start": "node ./src/index.js",
     "start:dev": "nodemon ./src/index.js",
     "vercel-build": "npx prisma migrate deploy --schema=./src/prisma/schema.prisma && npx prisma generate --schema=./src/prisma/schema.prisma"

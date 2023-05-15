@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const configJson = require("../package.json");
 
 const app = express();
 app.use(express.json());
@@ -17,7 +18,7 @@ app.get("/", (req, res) => {
     const ipAddress = req.header("x-forwarded-for") || req.socket.remoteAddress;
     res.send(`
       <center>
-        <h1>Welcome To Denonime API</h1>
+        <h1>Welcome To Denonime API v${configJson.version}</h1>
         <h4>Client From ${ipAddress}</h4>
       <center>
     `);

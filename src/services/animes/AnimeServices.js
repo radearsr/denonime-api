@@ -142,7 +142,6 @@ exports.deleteAnimeController = async (animeId) => {
 };
 
 exports.readAnimesWithSpec = async (payload) => {
-  // console.log({ type, currentPage, pageSize });
   const orderBy = utils.createOrderBy(payload.orderBy, payload.sort);
 
   const totalAnimes = await prisma.animes.count({
@@ -192,9 +191,7 @@ exports.readAnimesWithSpec = async (payload) => {
       totalCount: totalAnimes,
       totalPage,
     },
-    data: {
-      remapResult,
-    },
+    data: remapResult,
   };
 };
 
@@ -371,5 +368,91 @@ exports.readAllAnimesPopular = async (currentPage, pageSize) => {
       totalCount: totalPopuler,
       totalPage,
     },
+  };
+};
+
+exports.readAllAnimeByGenreId = async (genreSlug, queryParams) => {
+  const orderBy = utils.createOrderBy(queryParams.orderBy, queryParams.sort);
+
+  const genre = await prisma.genres.findFirst({
+    select: {
+      genreId: true,
+    },
+    where: {
+      slug: {
+        equals: genreSlug,
+      },
+    },
+  });
+
+  if (!genre) throw new NotFoundError(`Genre ${genreSlug} tidak ditemukan`);
+
+  const animeIds = await prisma.anime_genres.findMany({
+    select: {
+      animeId: true,
+    },
+    where: {
+      genreId: genre.genreId,
+    },
+  });
+
+  const animeIdArrays = animeIds.map((anime) => anime.animeId);
+
+  const totalAnimes = await prisma.animes.count({
+    where: {
+      type: queryParams.type,
+      status: queryParams.status,
+      animeId: {
+        in: animeIdArrays,
+      },
+    },
+  });
+
+  const totalPage = Math.ceil(totalAnimes / queryParams.pageSize);
+  const skipedData = (queryParams.currentPage * queryParams.pageSize) - queryParams.pageSize;
+  const results = await prisma.animes.findMany({
+    skip: skipedData,
+    take: queryParams.pageSize,
+    where: {
+      animeId: {
+        in: animeIdArrays,
+      },
+      type: queryParams.type,
+      status: queryParams.status,
+    },
+    include: {
+      _count: {
+        select: {
+          episodes: true,
+        },
+      },
+      anime_genres: {
+        select: {
+          genre: true,
+        },
+      },
+    },
+    orderBy,
+  });
+
+  const remapResult = results.map(({ _count: episodes, ...result }) => {
+    const mappedGenres = result.anime_genres.map((animeGenre) => animeGenre.genre.name);
+    return {
+      ...result,
+      totalEps: episodes.episodes,
+      anime_genres: mappedGenres,
+    };
+  });
+
+  if (remapResult.length < 1) throw new NotFoundError(`Anime dengan genre ${genreSlug}, type ${queryParams.type}, dan status ${queryParams.status} tidak ditemukan`);
+
+  return {
+    pages: {
+      pageSize: parseFloat(queryParams.pageSize),
+      currentPage: parseFloat(queryParams.currentPage),
+      totalCount: totalAnimes,
+      totalPage,
+    },
+    data: remapResult,
   };
 };

@@ -97,8 +97,8 @@ exports.getAnimesBySpecController = async (req, res) => {
       status = "Completed",
       currentPage = 1,
       pageSize = 10,
-      orderBy,
-      sort,
+      orderBy = "title",
+      sort = "asc",
     } = req.query;
 
     const animes = await services.readAnimesWithSpec({
@@ -113,7 +113,7 @@ exports.getAnimesBySpecController = async (req, res) => {
     return res.json({
       status: "success",
       message: "Anime berhasil ditampilkan",
-      data: animes.data.remapResult,
+      data: animes.data,
       pages: animes.pages,
     });
   } catch (error) {
@@ -249,6 +249,46 @@ exports.getAllAnimePopulerController = async (req, res) => {
       message: "Berhasil menampilkan semua anime popular",
       data: animesPopuler.data,
       pages: animesPopuler.pages,
+    });
+  } catch (error) {
+    if (error instanceof ClientError) {
+      return res.status(error.statusCode).send({
+        status: "fail",
+        message: error.message,
+      });
+    }
+    console.error(error);
+    return res.status(500).send({
+      status: "error",
+      message: "Terjadi kegagalan pada server kami.",
+    });
+  }
+};
+
+exports.getAllAnimeByGenreId = async (req, res) => {
+  try {
+    const { genreSlug } = req.params;
+    const {
+      type = "Series",
+      status = "Completed",
+      currentPage = 1,
+      pageSize = 10,
+      orderBy = "title",
+      sort = "asc",
+    } = req.query;
+    const resultAnimeByGenre = await services.readAllAnimeByGenreId(genreSlug, {
+      type,
+      status,
+      currentPage: parseFloat(currentPage),
+      pageSize: parseFloat(pageSize),
+      orderBy,
+      sort,
+    });
+    return res.json({
+      status: "success",
+      message: `Berhasil menampilkan semua anime dengan genre ${genreSlug}`,
+      data: resultAnimeByGenre.data,
+      pages: resultAnimeByGenre.pages,
     });
   } catch (error) {
     if (error instanceof ClientError) {

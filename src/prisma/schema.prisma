@@ -50,6 +50,7 @@ model animes {
 model genres {
   genreId     Int            @id @default(autoincrement())
   name        String?        @db.VarChar(50)
+  slug        String?        @unique
   animeGenres anime_genres[]
 }
 
@@ -110,7 +111,7 @@ enum StatusPublish {
 }
 
 enum streamType {
-  Mp4
   Otakudesu
   OwnServer
+  Mp4
 }

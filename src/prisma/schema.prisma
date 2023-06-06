@@ -51,6 +51,7 @@ model genres {
   genreId     Int            @id @default(autoincrement())
   name        String?        @db.VarChar(50)
   slug        String?        @unique
+  restricted  Boolean?       @default(false)
   animeGenres anime_genres[]
 }
 

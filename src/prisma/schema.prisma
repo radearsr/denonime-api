@@ -7,111 +7,97 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model roles {
-  roleId Int     @id @default(autoincrement())
-  name   String? @db.VarChar(50)
-  user   users[]
-}
-
-model users {
-  id        Int      @id @default(autoincrement())
-  firstName String?  @db.VarChar(255)
-  lastName  String?  @db.VarChar(255)
-  username  String?  @db.VarChar(255)
-  password  String?
-  email     String?  @db.VarChar(200)
-  roleId    Int
-  createdAt DateTime @default(now())
-  role      roles    @relation(fields: [roleId], references: [roleId])
-}
-
-model authentications {
-  token String @unique
-}
-
 model animes {
-  animeId           Int            @id @default(autoincrement())
-  title             String?        @db.VarChar(100)
-  rating            Float
-  description       String?
-  poster            String?        @db.VarChar(100)
-  type              AnimeType      @default(Series)
-  originalSource    String         @db.VarChar(100)
-  releaseDate       DateTime       @db.Date
-  status            StatusUpdate   @default(Completed)
-  slug              String?        @db.VarChar(100)
-  publish           StatusPublish  @default(Publish)
-  createdAt         DateTime       @default(now())
-  lastUpdateEpisode DateTime       @default(now()) @db.Timestamp(6)
-  anime_genres      anime_genres[]
-  episodes          episodes[]
-}
-
-model genres {
-  genreId     Int            @id @default(autoincrement())
-  name        String?        @db.VarChar(50)
-  slug        String?        @unique
-  animeGenres anime_genres[]
-}
-
-model anime_genres {
-  id      Int    @id @default(autoincrement())
-  animeId Int
-  genreId Int
-  anime   animes @relation(fields: [animeId], references: [animeId])
-  genre   genres @relation(fields: [genreId], references: [genreId])
+  id                   Int                    @id @default(autoincrement())
+  title                String?                @db.VarChar(100)
+  rating               Float
+  synopsis             String                 @db.Text
+  poster               String                 @db.VarChar()
+  anime_slug           String                 @db.VarChar(100)
+  release_date         DateTime               @db.Date
+  published            Boolean                @db.Boolean
+  status               AnimeStatus            @default(COMPLETED)
+  anime_type           AnimeType              @default(SERIES)
+  last_episode_update  DateTime               @default(now()) @db.Timestamp(6)
+  created_at           DateTime               @default(now())
+  episodes             episodes[]
+  episode_sources      episode_sources[]
+  anime_detail_sources anime_detail_sources[]
+  anime_genres         anime_genres[]
 }
 
 model episodes {
-  id               Int           @id @default(autoincrement())
-  episodeType      EpisodeType   @default(Tv)
-  streamStrategy   streamType    @default(OwnServer)
-  numEpisode       Int
-  sourceDefault    String
-  sourceHd         String
-  animeId          Int
-  createdAt        DateTime      @default(now())
-  publish          StatusPublish @default(Publish)
-  originalSourceEp String
-  Anime            animes        @relation(fields: [animeId], references: [animeId])
+  id              Int               @id @default(autoincrement())
+  episode_slug    String?           @db.VarChar(100)
+  episode_type    EpisodeType?      @default(TV)
+  number_episode  Int?
+  url_source      String?           @db.VarChar(100)
+  published       Boolean           @db.Boolean
+  anime_id        Int
+  created_at      DateTime          @default(now())
+  anime           animes            @relation(fields: [anime_id], references: [id])
+  episode_sources episode_sources[]
 }
 
-model carousel {
-  id          Int           @id @default(autoincrement())
-  title       String        @db.VarChar(100)
-  description String
-  type        AnimeType
-  slug        String        @db.VarChar(100)
-  poster      String        @db.VarChar(100)
-  background  String        @db.VarChar(100)
-  releaseDate DateTime      @db.Date
-  animeId     Int
-  createdAt   DateTime      @default(now())
-  publish     StatusPublish @default(Publish)
+model episode_sources {
+  id                Int                 @id @default(autoincrement())
+  label             LabelEpisodeSources @default(DEFAULT)
+  detail_source     String?             @db.VarChar(100)
+  scraping_strategy ScrapingStrategy    @default(CUSTOM)
+  anime_id          Int
+  episode_id        Int
+  created_at        DateTime            @default(now())
+  anime             animes              @relation(fields: [anime_id], references: [id])
+  episode           episodes            @relation(fields: [episode_id], references: [id])
 }
 
-enum StatusUpdate {
-  Ongoing
-  Completed
+model anime_detail_sources {
+  id                Int              @id @default(autoincrement())
+  url_source        String?          @db.VarChar(100)
+  scraping_strategy ScrapingStrategy @default(CUSTOM)
+  anime_id          Int
+  created_at        DateTime         @default(now())
+  anime             animes           @relation(fields: [anime_id], references: [id])
+}
+
+model genres {
+  id           Int            @id @default(autoincrement())
+  genre_slug   String?        @db.VarChar(50)
+  name         String?        @db.VarChar(50)
+  anime_genres anime_genres[]
+}
+
+model anime_genres {
+  id       Int    @id @default(autoincrement())
+  anime_id Int
+  genre_id Int
+  anime    animes @relation(fields: [anime_id], references: [id])
+  genre    genres @relation(fields: [genre_id], references: [id])
+}
+
+enum AnimeStatus {
+  ONGOING
+  COMPLETED
 }
 
 enum AnimeType {
-  Movie
-  Series
+  MOVIES
+  SERIES
 }
 
 enum EpisodeType {
-  Tv
-  Ova
+  TV
+  MV
+  OVA
 }
 
-enum StatusPublish {
-  Publish
-  NonPublish
+enum ScrapingStrategy {
+  ANIMEINDO
+  OTAKUDESU
+  CUSTOM
 }
 
-enum streamType {
-  Otakudesu
-  OwnServer
-  Mp4
+enum LabelEpisodeSources {
+  HD
+  DEFAULT
 }

@@ -1,0 +1,117 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model roles {
+  roleId Int     @id @default(autoincrement())
+  name   String? @db.VarChar(50)
+  user   users[]
+}
+
+model users {
+  id        Int      @id @default(autoincrement())
+  firstName String?  @db.VarChar(255)
+  lastName  String?  @db.VarChar(255)
+  username  String?  @db.VarChar(255)
+  password  String?
+  email     String?  @db.VarChar(200)
+  roleId    Int
+  createdAt DateTime @default(now())
+  role      roles    @relation(fields: [roleId], references: [roleId])
+}
+
+model authentications {
+  token String @unique
+}
+
+model animes {
+  animeId           Int            @id @default(autoincrement())
+  title             String?        @db.VarChar(100)
+  rating            Float
+  description       String?
+  poster            String?        @db.VarChar(100)
+  type              AnimeType      @default(Series)
+  originalSource    String         @db.VarChar(100)
+  releaseDate       DateTime       @db.Date
+  status            StatusUpdate   @default(Completed)
+  slug              String?        @db.VarChar(100)
+  publish           StatusPublish  @default(Publish)
+  createdAt         DateTime       @default(now())
+  lastUpdateEpisode DateTime       @default(now()) @db.Timestamp(6)
+  anime_genres      anime_genres[]
+  episodes          episodes[]
+}
+
+model genres {
+  genreId     Int            @id @default(autoincrement())
+  name        String?        @db.VarChar(50)
+  slug        String?        @unique
+  animeGenres anime_genres[]
+}
+
+model anime_genres {
+  id      Int    @id @default(autoincrement())
+  animeId Int
+  genreId Int
+  anime   animes @relation(fields: [animeId], references: [animeId])
+  genre   genres @relation(fields: [genreId], references: [genreId])
+}
+
+model episodes {
+  id               Int           @id @default(autoincrement())
+  episodeType      EpisodeType   @default(Tv)
+  streamStrategy   streamType    @default(OwnServer)
+  numEpisode       Int
+  sourceDefault    String
+  sourceHd         String
+  animeId          Int
+  createdAt        DateTime      @default(now())
+  publish          StatusPublish @default(Publish)
+  originalSourceEp String
+  Anime            animes        @relation(fields: [animeId], references: [animeId])
+}
+
+model carousel {
+  id          Int           @id @default(autoincrement())
+  title       String        @db.VarChar(100)
+  description String
+  type        AnimeType
+  slug        String        @db.VarChar(100)
+  poster      String        @db.VarChar(100)
+  background  String        @db.VarChar(100)
+  releaseDate DateTime      @db.Date
+  animeId     Int
+  createdAt   DateTime      @default(now())
+  publish     StatusPublish @default(Publish)
+}
+
+enum StatusUpdate {
+  Ongoing
+  Completed
+}
+
+enum AnimeType {
+  Movie
+  Series
+}
+
+enum EpisodeType {
+  Tv
+  Ova
+}
+
+enum StatusPublish {
+  Publish
+  NonPublish
+}
+
+enum streamType {
+  Otakudesu
+  OwnServer
+  Mp4
+}

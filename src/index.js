@@ -12,6 +12,7 @@ app.use("/api/v1/authentications", require("./api/v1/authentications"));
 app.use("/api/v1/animes", require("./api/v1/animes"));
 app.use("/api/v1/episodes", require("./api/v1/episodes"));
 app.use("/api/v1/carousel", require("./api/v1/carousel"));
+app.use("/api/v2/animes", require("./api/v2/animes"));
 
 app.get("/", (req, res) => {
   try {

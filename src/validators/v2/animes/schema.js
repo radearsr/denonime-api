@@ -5,7 +5,7 @@ const createAnimePayloadSchema = Joi.object({
   rating: Joi.number().required(),
   synopsis: Joi.string().required(),
   poster: Joi.string().required(),
-  anime_type: Joi.string().valid("MOVIE", "SERIES").required(),
+  anime_type: Joi.string().valid("MOVIES", "SERIES").required(),
   release_date: Joi.string().required(),
   genres: Joi.string().required(),
   status: Joi.string().valid("COMPLETED", "ONGOING").required(),

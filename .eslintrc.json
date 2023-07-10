@@ -14,6 +14,8 @@
         "quotes": ["error", "double"],
         "linebreak-style": ["off", "windows"],
         "no-console": "off",
-        "no-underscore-dangle": "off"
+        "no-underscore-dangle": "off",
+        "no-await-in-loop": "off",
+        "radix": "off"
     }
 }

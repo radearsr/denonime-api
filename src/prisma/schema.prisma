@@ -13,7 +13,7 @@ model animes {
   rating               Float
   synopsis             String                 @db.Text
   poster               String                 @db.VarChar()
-  anime_slug           String                 @db.VarChar(100)
+  anime_slug           String                 @db.VarChar(100)@unique()
   release_date         DateTime               @db.Date
   published            Boolean                @db.Boolean
   status               AnimeStatus            @default(COMPLETED)
@@ -28,7 +28,7 @@ model animes {
 
 model episodes {
   id              Int               @id @default(autoincrement())
-  episode_slug    String?           @db.VarChar(100)
+  episode_slug    String?           @db.VarChar(100)@unique()
   episode_type    EpisodeType?      @default(TV)
   number_episode  Int?
   url_source      String?           @db.VarChar(100)

@@ -94,6 +94,7 @@ exports.postEpisodeSourcesController = async (req, res) => {
     await animeServices.verifyAnimeId(req.body.anime_id);
     await services.verifyEpisodeId(req.body.episode_id);
     await services.createEpisodeSources(req.body);
+    res.statusCode = 201;
     return res.send({
       status: "success",
       message: "Berhasil menambahkan sumber episode",

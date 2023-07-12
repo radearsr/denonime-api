@@ -21,7 +21,7 @@ exports.createEpisode = async (payload) => {
 
 exports.verifyEpisodeId = async (episodeId) => {
   if (!episodeId) throw new InvariantError("ID episode yang anda masukkan tidak sesuai");
-  const resultEpisodeId = prisma.episodes.findUnique({
+  const resultEpisodeId = await prisma.episodes.findUnique({
     where: {
       id: episodeId,
     },

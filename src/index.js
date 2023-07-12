@@ -32,7 +32,7 @@ app.get("/", (req, res) => {
 });
 
 app.all("*", (req, res) => {
-  res.status(404);
+  res.statusCode = 404;
   res.json({
     status: "fail",
     message: "Url Not Found",

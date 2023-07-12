@@ -56,3 +56,16 @@ exports.deleteEpisode = async (episodeId) => {
   if (!deletedEpisode) throw new InvariantError("Gagal menghapus episode");
   return deletedEpisode;
 };
+
+exports.createEpisodeSources = async (payload) => {
+  const createdEpisodeSource = await prisma.episode_sources.create({
+    data: {
+      label: payload.label,
+      url_source: payload.url_source,
+      scraping_strategy: payload.scraping_strategy,
+      anime_id: payload.anime_id,
+      episode_id: payload.episode_id,
+    },
+  });
+  if (!createdEpisodeSource) throw new InvariantError("Gagal menambahkan sumber episode");
+};

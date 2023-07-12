@@ -9,6 +9,15 @@ const createEpisodePayloadSchema = Joi.object({
   anime_id: Joi.number().required(),
 });
 
+const createEpisodeSourcePayloadSchema = Joi.object({
+  label: Joi.string().required(),
+  url_source: Joi.string().required(),
+  scraping_strategy: Joi.string().valid("ANIMEINDO", "OTAKUDESU", "CUSTOM"),
+  anime_id: Joi.number().required(),
+  episode_id: Joi.number().required(),
+});
+
 module.exports = {
   createEpisodePayloadSchema,
+  createEpisodeSourcePayloadSchema,
 };

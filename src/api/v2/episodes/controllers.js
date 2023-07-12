@@ -87,3 +87,30 @@ exports.deleteEpisodeController = async (req, res) => {
     });
   }
 };
+
+exports.postEpisodeSourcesController = async (req, res) => {
+  try {
+    validator.validateEpisodeSourcePayload(req.body);
+    await animeServices.verifyAnimeId(req.body.anime_id);
+    await services.verifyEpisodeId(req.body.episode_id);
+    await services.createEpisodeSources(req.body);
+    return res.send({
+      status: "success",
+      message: "Berhasil menambahkan sumber episode",
+    });
+  } catch (error) {
+    console.log(error);
+    if (error instanceof ClientError) {
+      res.statusCode = error.statusCode;
+      return res.send({
+        status: "fail",
+        message: error.message,
+      });
+    }
+    res.statusCode = 500;
+    return res.send({
+      status: "error",
+      message: "Terjadi kegagalan pada server kami.",
+    });
+  }
+};

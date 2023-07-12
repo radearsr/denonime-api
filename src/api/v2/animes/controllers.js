@@ -4,7 +4,7 @@ const validator = require("../../../validators/v2/animes");
 
 exports.postAnimeController = async (req, res) => {
   try {
-    validator.validateAnimePayload(req.body);
+    validator.validateAnime(req.body);
     const createdAnime = await services.createAnime(req.body);
     await services.createAnimeGenres(
       req.body.genres,
@@ -40,7 +40,7 @@ exports.putAnimeController = async (req, res) => {
   try {
     const { animeId } = req.params;
     await services.verifyAnimeId(parseInt(animeId));
-    validator.validateAnimePayload(req.body);
+    validator.validateAnime(req.body);
     const updatedAnime = await services.updateAnimeById(parseInt(animeId), req.body);
     return res.send({
       status: "success",

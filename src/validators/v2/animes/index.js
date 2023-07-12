@@ -1,9 +1,18 @@
 const InvariantError = require("../../../exceptions/InvariantError");
-const { createAnimePayloadSchema } = require("./schema");
+const {
+  createAnimeSchema,
+  createAnimeDetailSourcesSchema,
+} = require("./schema");
 
 const AnimesValidator = {
-  validateAnimePayload: (payload) => {
-    const validationResult = createAnimePayloadSchema.validate(payload);
+  validateAnime: (payload) => {
+    const validationResult = createAnimeSchema.validate(payload);
+    if (validationResult.error) {
+      throw new InvariantError(validationResult.error.message);
+    }
+  },
+  validateAnimeDetailSources: (payload) => {
+    const validationResult = createAnimeDetailSourcesSchema.validate(payload);
     if (validationResult.error) {
       throw new InvariantError(validationResult.error.message);
     }

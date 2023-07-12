@@ -1,6 +1,6 @@
 const Joi = require("joi");
 
-const createAnimePayloadSchema = Joi.object({
+const createAnimeSchema = Joi.object({
   title: Joi.string().required(),
   rating: Joi.number().required(),
   synopsis: Joi.string().required(),
@@ -12,6 +12,13 @@ const createAnimePayloadSchema = Joi.object({
   published: Joi.boolean().required(),
 });
 
+const createAnimeDetailSourcesSchema = Joi.object({
+  anime_id: Joi.number().required(),
+  url_source: Joi.string().required(),
+  scraping_strategy: Joi.string().valid("ANIMEINDO", "OTAKUDESU", "CUSTOM"),
+});
+
 module.exports = {
-  createAnimePayloadSchema,
+  createAnimeSchema,
+  createAnimeDetailSourcesSchema,
 };

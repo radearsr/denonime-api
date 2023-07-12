@@ -1,7 +1,7 @@
 const InvariantError = require("../../../exceptions/InvariantError");
 const { createAnimePayloadSchema } = require("./schema");
 
-const AnimesValidator = {
+const AnimeDetailSourcesValidator = {
   validateAnimeDetailSourcesPayload: (payload) => {
     const validationResult = createAnimePayloadSchema.validate(payload);
     if (validationResult.error) {
@@ -10,4 +10,4 @@ const AnimesValidator = {
   },
 };
 
-module.exports = AnimesValidator;
+module.exports = AnimeDetailSourcesValidator;

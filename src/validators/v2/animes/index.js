@@ -2,6 +2,7 @@ const InvariantError = require("../../../exceptions/InvariantError");
 const {
   createAnimeSchema,
   createAnimeDetailSourcesSchema,
+  readAnimeCountSchema,
 } = require("./schema");
 
 const AnimesValidator = {
@@ -13,6 +14,12 @@ const AnimesValidator = {
   },
   validateAnimeDetailSources: (payload) => {
     const validationResult = createAnimeDetailSourcesSchema.validate(payload);
+    if (validationResult.error) {
+      throw new InvariantError(validationResult.error.message);
+    }
+  },
+  validateGetAnimeCount: (payload) => {
+    const validationResult = readAnimeCountSchema.validate(payload);
     if (validationResult.error) {
       throw new InvariantError(validationResult.error.message);
     }

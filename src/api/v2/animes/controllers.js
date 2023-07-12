@@ -21,6 +21,7 @@ exports.postAnimeController = async (req, res) => {
       },
     });
   } catch (error) {
+    console.log(error);
     if (error instanceof ClientError) {
       res.statusCode = error.statusCode;
       return res.send({
@@ -96,6 +97,30 @@ exports.postAnimeSourcesController = async (req, res) => {
     return res.send({
       status: "success",
       message: "Berhasil menambahkan sumber anime",
+    });
+  } catch (error) {
+    if (error instanceof ClientError) {
+      res.statusCode = error.statusCode;
+      return res.send({
+        status: "fail",
+        message: error.message,
+      });
+    }
+    res.statusCode = 500;
+    return res.send({
+      status: "error",
+      message: "Terjadi kegagalan pada server kami.",
+    });
+  }
+};
+
+exports.GetCountAnimesController = async (req, res) => {
+  try {
+    validator.validateGetAnimeCount(req.query);
+    const animesCount = await services.readAnimesCount(req.query.scraping_strategy);
+    return res.send({
+      status: "success",
+      animes_count: animesCount,
     });
   } catch (error) {
     if (error instanceof ClientError) {

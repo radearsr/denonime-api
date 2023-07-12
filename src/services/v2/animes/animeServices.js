@@ -117,3 +117,19 @@ exports.createAnimeDetailSources = async (payload) => {
   });
   if (!createdDetail) throw new InvariantError("Gagal membuat anime detail sources");
 };
+
+exports.readAnimesCount = async (scrapingStrategy) => {
+  const animesCount = await prisma.animes.count({
+    where: {
+      anime_detail_sources: {
+        some: {
+          scraping_strategy: scrapingStrategy,
+        },
+      },
+    },
+  });
+  if (animesCount === null) {
+    throw new InvariantError(`Gagal menghitung anime dengan scraping strategy ${scrapingStrategy}`);
+  }
+  return animesCount;
+};

@@ -7,6 +7,7 @@ router
   .post("/", controllers.postAnimeController)
   .put("/:animeId", controllers.putAnimeController)
   .delete("/:animeId", controllers.deleteAnimeController)
-  .post("/sources", controllers.postAnimeSourcesController);
+  .post("/sources", controllers.postAnimeSourcesController)
+  .get("/count", controllers.GetCountAnimesController);
 
 module.exports = router;

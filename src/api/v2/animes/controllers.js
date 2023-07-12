@@ -66,7 +66,7 @@ exports.deleteAnimeController = async (req, res) => {
   try {
     const { animeId } = req.params;
     await services.verifyAnimeId(parseInt(animeId));
-    const deletedAnime = await services.deleteAnimeAndGenres(parseInt(animeId));
+    const deletedAnime = await services.deleteAllDataWithRelatedAnimeId(parseInt(animeId));
     return res.send({
       status: "success",
       message: `Berhasil menghapus anime ${deletedAnime.title}`,

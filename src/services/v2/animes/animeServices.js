@@ -75,8 +75,23 @@ exports.updateAnimeById = async (animeId, payload) => {
   return updatedAnime;
 };
 
-exports.deleteAnimeAndGenres = async (animeId) => {
+exports.deleteAllDataWithRelatedAnimeId = async (animeId) => {
   const deletedAnimeAndGenres = await prisma.$transaction([
+    prisma.episode_sources.deleteMany({
+      where: {
+        anime_id: animeId,
+      },
+    }),
+    prisma.episodes.deleteMany({
+      where: {
+        anime_id: animeId,
+      },
+    }),
+    prisma.anime_detail_sources.deleteMany({
+      where: {
+        anime_id: animeId,
+      },
+    }),
     prisma.anime_genres.deleteMany({
       where: {
         anime_id: animeId,
@@ -89,7 +104,7 @@ exports.deleteAnimeAndGenres = async (animeId) => {
     }),
   ]);
   if (!deletedAnimeAndGenres) throw new InvariantError("Gagal menghapus anime");
-  return deletedAnimeAndGenres[1];
+  return deletedAnimeAndGenres[4];
 };
 
 exports.createAnimeDetailSources = async (payload) => {

@@ -42,7 +42,7 @@ model episodes {
 model episode_sources {
   id                Int                 @id @default(autoincrement())
   label             LabelEpisodeSources @default(DEFAULT)
-  detail_source     String?             @db.VarChar(100)
+  url_source        String?             @db.VarChar(100)
   scraping_strategy ScrapingStrategy    @default(CUSTOM)
   anime_id          Int
   episode_id        Int

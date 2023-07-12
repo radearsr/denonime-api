@@ -87,3 +87,28 @@ exports.deleteAnimeController = async (req, res) => {
     });
   }
 };
+
+exports.postAnimeSourcesController = async (req, res) => {
+  try {
+    validator.validateAnimeDetailSources(req.body);
+    await services.verifyAnimeId(req.body.anime_id);
+    await services.createAnimeDetailSources(req.body);
+    return res.send({
+      status: "success",
+      message: "Berhasil menambahkan sumber anime",
+    });
+  } catch (error) {
+    if (error instanceof ClientError) {
+      res.statusCode = error.statusCode;
+      return res.send({
+        status: "fail",
+        message: error.message,
+      });
+    }
+    res.statusCode = 500;
+    return res.send({
+      status: "error",
+      message: "Terjadi kegagalan pada server kami.",
+    });
+  }
+};

@@ -6,6 +6,7 @@ const router = Router();
 router
   .post("/", controllers.postAnimeController)
   .put("/:animeId", controllers.putAnimeController)
-  .delete("/:animeId", controllers.deleteAnimeController);
+  .delete("/:animeId", controllers.deleteAnimeController)
+  .post("/sources", controllers.postAnimeSourcesController);
 
 module.exports = router;

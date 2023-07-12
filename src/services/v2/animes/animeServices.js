@@ -18,11 +18,8 @@ exports.createAnime = async (payload) => {
       published: payload.published,
     },
   });
-  if (!createdAnime.id) throw new InvariantError("Gagal menambahkan anime");
-  return {
-    id: createdAnime.id,
-    anime_slug: createdAnime.anime_slug,
-  };
+  if (!createdAnime) throw new InvariantError("Gagal menambahkan anime");
+  return createdAnime;
 };
 
 exports.createAnimeGenres = async (genres, animeId) => {
@@ -93,4 +90,15 @@ exports.deleteAnimeAndGenres = async (animeId) => {
   ]);
   if (!deletedAnimeAndGenres) throw new InvariantError("Gagal menghapus anime");
   return deletedAnimeAndGenres[1];
+};
+
+exports.createAnimeDetailSources = async (payload) => {
+  const createdDetail = await prisma.anime_detail_sources.create({
+    data: {
+      anime_id: payload.anime_id,
+      url_source: payload.url_source,
+      scraping_strategy: payload.scraping_strategy,
+    },
+  });
+  if (!createdDetail) throw new InvariantError("Gagal membuat anime detail sources");
 };

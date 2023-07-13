@@ -114,13 +114,37 @@ exports.postAnimeSourcesController = async (req, res) => {
   }
 };
 
-exports.GetCountAnimesController = async (req, res) => {
+exports.getCountAnimesController = async (req, res) => {
   try {
     validator.validateGetAnimeCount(req.query);
     const animesCount = await services.readAnimesCount(req.query.scraping_strategy);
     return res.send({
       status: "success",
       animes_count: animesCount,
+    });
+  } catch (error) {
+    if (error instanceof ClientError) {
+      res.statusCode = error.statusCode;
+      return res.send({
+        status: "fail",
+        message: error.message,
+      });
+    }
+    res.statusCode = 500;
+    return res.send({
+      status: "error",
+      message: "Terjadi kegagalan pada server kami.",
+    });
+  }
+};
+
+exports.getAllAnimesWithoutFilterController = async (req, res) => {
+  try {
+    const animes = await services.readAllAnimesWithoutFilter();
+    return res.send({
+      status: "success",
+      message: "Berhasil mendapatkan semua anime",
+      data: animes,
     });
   } catch (error) {
     if (error instanceof ClientError) {

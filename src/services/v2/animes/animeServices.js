@@ -133,3 +133,8 @@ exports.readAnimesCount = async (scrapingStrategy) => {
   }
   return animesCount;
 };
+
+exports.readAllAnimesWithoutFilter = async () => {
+  const animes = await prisma.animes.findMany();
+  return animes;
+};

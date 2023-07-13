@@ -113,6 +113,7 @@ exports.createAnimeDetailSources = async (payload) => {
       anime_id: payload.anime_id,
       url_source: payload.url_source,
       scraping_strategy: payload.scraping_strategy,
+      monitoring: payload.monitoring,
     },
   });
   if (!createdDetail) throw new InvariantError("Gagal membuat anime detail sources");

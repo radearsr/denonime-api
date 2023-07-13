@@ -56,7 +56,7 @@ model anime_detail_sources {
   url_source        String?          @db.VarChar(100)@unique()
   scraping_strategy ScrapingStrategy @default(CUSTOM)
   anime_id          Int
-  monitoring        Boolean          @db.Boolean
+  monitoring        Boolean          @db.Boolean @default(true)
   created_at        DateTime         @default(now())
   anime             animes           @relation(fields: [anime_id], references: [id])
 }

@@ -16,6 +16,7 @@ const createAnimeDetailSourcesSchema = Joi.object({
   anime_id: Joi.number().required(),
   url_source: Joi.string().required(),
   scraping_strategy: Joi.string().valid("ANIMEINDO", "OTAKUDESU", "CUSTOM").required(),
+  monitoring: Joi.boolean().required(),
 });
 
 const readAnimeCountSchema = Joi.object({

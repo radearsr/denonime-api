@@ -9,6 +9,7 @@ router
   .delete("/:animeId", controllers.deleteAnimeController)
   .post("/sources", controllers.postAnimeSourcesController)
   .get("/count", controllers.getCountAnimesController)
-  .get("/all", controllers.getAllAnimesWithoutFilterController);
+  .get("/all", controllers.getAllAnimesWithoutFilterController)
+  .get("/ongoing", controllers.getAllAnimesOngoing);
 
 module.exports = router;

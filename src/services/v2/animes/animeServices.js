@@ -139,3 +139,30 @@ exports.readAllAnimesWithoutFilter = async () => {
   const animes = await prisma.animes.findMany();
   return animes;
 };
+
+exports.readOngoingAnimes = async () => {
+  const animes = await prisma.animes.findMany({
+    select: {
+      id: true,
+      title: true,
+      anime_detail_sources: {
+        select: {
+          url_source: true,
+          scraping_strategy: true,
+        },
+        where: {
+          monitoring: true,
+        },
+      },
+      episodes: {
+        select: {
+          number_episode: true,
+        },
+      },
+    },
+    where: {
+      status: "ONGOING",
+    },
+  });
+  return animes;
+};

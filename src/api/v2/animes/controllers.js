@@ -161,3 +161,28 @@ exports.getAllAnimesWithoutFilterController = async (req, res) => {
     });
   }
 };
+
+exports.getAllAnimesOngoing = async (req, res) => {
+  try {
+    const animes = await services.readOngoingAnimes();
+    return res.send({
+      status: "success",
+      message: "Berhasil mendapatkan anime ongoing",
+      data: animes,
+    });
+  } catch (error) {
+    console.log(error);
+    if (error instanceof ClientError) {
+      res.statusCode = error.statusCode;
+      return res.send({
+        status: "fail",
+        message: error.message,
+      });
+    }
+    res.statusCode = 500;
+    return res.send({
+      status: "error",
+      message: "Terjadi kegagalan pada server kami.",
+    });
+  }
+};

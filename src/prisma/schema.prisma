@@ -9,7 +9,7 @@ datasource db {
 
 model animes {
   id                   Int                    @id @default(autoincrement())
-  title                String?                @db.VarChar(100)
+  title                String?                @db.VarChar(100)@unique()
   rating               Float
   synopsis             String                 @db.Text
   poster               String                 @db.VarChar()

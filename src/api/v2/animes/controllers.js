@@ -1,11 +1,12 @@
 const ClientError = require("../../../exceptions/ClientError");
 const services = require("../../../services/v2/animes/animeServices");
 const validator = require("../../../validators/v2/animes");
+const errorTranslater = require("../../../exceptions/errorTranslater");
 
 exports.postAnimeController = async (req, res) => {
   try {
     validator.validateAnime(req.body);
-    const createdAnime = await services.createAnime(req.body);
+    const createdAnime = await services.createAnime({ ...req.body, title: req.body.title.trim() });
     await services.createAnimeGenres(
       req.body.genres,
       createdAnime.id,
@@ -21,7 +22,6 @@ exports.postAnimeController = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error);
     if (error instanceof ClientError) {
       res.statusCode = error.statusCode;
       return res.send({
@@ -29,10 +29,11 @@ exports.postAnimeController = async (req, res) => {
         message: error.message,
       });
     }
-    res.statusCode = 500;
+    const resultTranslater = errorTranslater.translateErrorToResponse(error);
+    res.statusCode = resultTranslater.code;
     return res.send({
-      status: "error",
-      message: "Terjadi kegagalan pada server kami.",
+      status: resultTranslater.status,
+      message: resultTranslater.message,
     });
   }
 };

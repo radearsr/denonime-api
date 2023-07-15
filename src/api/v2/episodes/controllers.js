@@ -14,6 +14,7 @@ exports.postEpisodeController = async (req, res) => {
       message: "Berhasil menambahkan episode baru",
       data: {
         anime_id: createdEpisode.anime_id,
+        episode_id: createdEpisode.id,
         episode_slug: createdEpisode.episode_slug,
       },
     });

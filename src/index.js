@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+const ClientError = require("./exceptions/ClientError");
+const errorTranslater = require("./exceptions/errorTranslater");
 const configJson = require("../package.json");
 
 const app = express();
@@ -29,6 +31,22 @@ app.get("/", (req, res) => {
   } catch (error) {
     res.send("Terjadi Kegagalan pada server cek log...");
   }
+});
+
+app.use((error, req, res, next) => {
+  if (error instanceof ClientError) {
+    res.statusCode = error.statusCode;
+    return res.send({
+      status: "fail",
+      message: error.message,
+    });
+  }
+  const resultTranslater = errorTranslater.translateErrorToResponse(error);
+  res.statusCode = resultTranslater.code;
+  return res.send({
+    status: resultTranslater.status,
+    message: resultTranslater.message,
+  });
 });
 
 app.all("*", (req, res) => {

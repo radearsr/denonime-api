@@ -16,6 +16,7 @@
         "no-console": "off",
         "no-underscore-dangle": "off",
         "no-await-in-loop": "off",
-        "radix": "off"
+        "radix": "off",
+        "no-unused-vars": ["error", { "argsIgnorePattern": "next" }]
     }
 }

@@ -1,18 +1,19 @@
-const ClientError = require("../../../exceptions/ClientError");
 const services = require("../../../services/v2/animes/animeServices");
 const validator = require("../../../validators/v2/animes");
-const errorTranslater = require("../../../exceptions/errorTranslater");
 
-exports.postAnimeController = async (req, res) => {
+exports.postAnimeController = async (req, res, next) => {
   try {
     validator.validateAnime(req.body);
-    const createdAnime = await services.createAnime({ ...req.body, title: req.body.title.trim() });
+    const createdAnime = await services.createAnime({
+      ...req.body,
+      title: req.body.title.trim(),
+    });
     await services.createAnimeGenres(
       req.body.genres,
       createdAnime.id,
     );
     res.statusCode = 201;
-    return res.send({
+    res.send({
       status: "success",
       message: "Berhasil menambahkan anime baru",
       data: {
@@ -22,168 +23,89 @@ exports.postAnimeController = async (req, res) => {
       },
     });
   } catch (error) {
-    if (error instanceof ClientError) {
-      res.statusCode = error.statusCode;
-      return res.send({
-        status: "fail",
-        message: error.message,
-      });
-    }
-    const resultTranslater = errorTranslater.translateErrorToResponse(error);
-    res.statusCode = resultTranslater.code;
-    return res.send({
-      status: resultTranslater.status,
-      message: resultTranslater.message,
-    });
+    // console.log(error);
+    next(error);
   }
 };
 
-exports.putAnimeController = async (req, res) => {
+exports.putAnimeController = async (req, res, next) => {
   try {
     const { animeId } = req.params;
     await services.verifyAnimeId(parseInt(animeId));
     validator.validateAnime(req.body);
     const updatedAnime = await services.updateAnimeById(parseInt(animeId), req.body);
-    return res.send({
+    res.send({
       status: "success",
       message: `Berhasil memperbarui anime ${updatedAnime.title}`,
     });
   } catch (error) {
-    if (error instanceof ClientError) {
-      res.statusCode = error.statusCode;
-      return res.send({
-        status: "fail",
-        message: error.message,
-      });
-    }
-    res.statusCode = 500;
-    return res.send({
-      status: "error",
-      message: "Terjadi kegagalan pada server kami.",
-    });
+    next(error);
   }
 };
 
-exports.deleteAnimeController = async (req, res) => {
+exports.deleteAnimeController = async (req, res, next) => {
   try {
     const { animeId } = req.params;
     await services.verifyAnimeId(parseInt(animeId));
     const deletedAnime = await services.deleteAllDataWithRelatedAnimeId(parseInt(animeId));
-    return res.send({
+    res.send({
       status: "success",
       message: `Berhasil menghapus anime ${deletedAnime.title}`,
     });
   } catch (error) {
-    console.log(error);
-    if (error instanceof ClientError) {
-      res.statusCode = error.statusCode;
-      return res.send({
-        status: "fail",
-        message: error.message,
-      });
-    }
-    res.statusCode = 500;
-    return res.send({
-      status: "error",
-      message: "Terjadi kegagalan pada server kami.",
-    });
+    next(error);
   }
 };
 
-exports.postAnimeSourcesController = async (req, res) => {
+exports.postAnimeSourcesController = async (req, res, next) => {
   try {
     validator.validateAnimeDetailSources(req.body);
     await services.verifyAnimeId(req.body.anime_id);
     await services.createAnimeDetailSources(req.body);
-    return res.send({
+    res.send({
       status: "success",
       message: "Berhasil menambahkan sumber anime",
     });
   } catch (error) {
-    if (error instanceof ClientError) {
-      res.statusCode = error.statusCode;
-      return res.send({
-        status: "fail",
-        message: error.message,
-      });
-    }
-    res.statusCode = 500;
-    return res.send({
-      status: "error",
-      message: "Terjadi kegagalan pada server kami.",
-    });
+    next(error);
   }
 };
 
-exports.getCountAnimesController = async (req, res) => {
+exports.getCountAnimesController = async (req, res, next) => {
   try {
     validator.validateGetAnimeCount(req.query);
     const animesCount = await services.readAnimesCount(req.query.scraping_strategy);
-    return res.send({
+    res.send({
       status: "success",
       animes_count: animesCount,
     });
   } catch (error) {
-    if (error instanceof ClientError) {
-      res.statusCode = error.statusCode;
-      return res.send({
-        status: "fail",
-        message: error.message,
-      });
-    }
-    res.statusCode = 500;
-    return res.send({
-      status: "error",
-      message: "Terjadi kegagalan pada server kami.",
-    });
+    next(error);
   }
 };
 
-exports.getAllAnimesWithoutFilterController = async (req, res) => {
+exports.getAllAnimesWithoutFilterController = async (req, res, next) => {
   try {
     const animes = await services.readAllAnimesWithoutFilter();
-    return res.send({
+    res.send({
       status: "success",
       message: "Berhasil mendapatkan semua anime",
       data: animes,
     });
   } catch (error) {
-    if (error instanceof ClientError) {
-      res.statusCode = error.statusCode;
-      return res.send({
-        status: "fail",
-        message: error.message,
-      });
-    }
-    res.statusCode = 500;
-    return res.send({
-      status: "error",
-      message: "Terjadi kegagalan pada server kami.",
-    });
+    next(next);
   }
 };
 
-exports.getAllAnimesOngoing = async (req, res) => {
+exports.getAllAnimesOngoing = async (req, res, next) => {
   try {
     const animes = await services.readOngoingAnimes();
-    return res.send({
+    res.send({
       status: "success",
       message: "Berhasil mendapatkan anime ongoing",
       data: animes,
     });
   } catch (error) {
-    console.log(error);
-    if (error instanceof ClientError) {
-      res.statusCode = error.statusCode;
-      return res.send({
-        status: "fail",
-        message: error.message,
-      });
-    }
-    res.statusCode = 500;
-    return res.send({
-      status: "error",
-      message: "Terjadi kegagalan pada server kami.",
-    });
+    next(error);
   }
 };

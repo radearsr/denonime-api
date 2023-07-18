@@ -2,6 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const slugs = require("slugs");
 const InvariantError = require("../../../exceptions/InvariantError");
 const NotFoundError = require("../../../exceptions/NotFoundError");
+const utils = require("../../../utils");
 
 const prisma = new PrismaClient();
 
@@ -165,4 +166,33 @@ exports.readOngoingAnimes = async () => {
     },
   });
   return animes;
+};
+
+exports.readAnimesWithSorting = async (queryParams) => {
+  const orderBy = utils.createOrderBy(queryParams.order_by, queryParams.sorting);
+  const whereQuery = utils.createWhereQuery(queryParams.status, queryParams.type);
+  const animesCount = await prisma.animes.count({
+    where: whereQuery,
+  });
+  if (!animesCount) throw new NotFoundError(`anime dengan status ${queryParams} dan type ${queryParams.type}`);
+
+  const totalPage = Math.ceil(animesCount / queryParams.page_size);
+  const skipedData = (queryParams.current_page * queryParams.page_size) - queryParams.page_size;
+
+  const animes = await prisma.animes.findMany({
+    take: queryParams.page_size,
+    skip: skipedData,
+    where: whereQuery,
+    orderBy,
+  });
+
+  if (!animes) throw new InvariantError("Gagal mendapatkan anime yang dimaksud");
+
+  return {
+    data: animes,
+    pages: {
+      current_page: queryParams.current_page,
+      total_page: totalPage,
+    },
+  };
 };

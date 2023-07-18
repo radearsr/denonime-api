@@ -10,6 +10,7 @@ router
   .post("/sources", controllers.postAnimeSourcesController)
   .get("/count", controllers.getCountAnimesController)
   .get("/all", controllers.getAllAnimesWithoutFilterController)
-  .get("/ongoing", controllers.getAllAnimesOngoing);
+  .get("/ongoing", controllers.getAllAnimesOngoing)
+  .get("/sorting", controllers.getAnimesWithSortingController);
 
 module.exports = router;

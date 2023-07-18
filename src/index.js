@@ -41,6 +41,7 @@ app.use((error, req, res, next) => {
       message: error.message,
     });
   }
+  console.log(error);
   const resultTranslater = errorTranslater.translateErrorToResponse(error);
   res.statusCode = resultTranslater.code;
   return res.send({

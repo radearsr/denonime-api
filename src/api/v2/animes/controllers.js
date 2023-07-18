@@ -109,3 +109,33 @@ exports.getAllAnimesOngoing = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.getAnimesWithSortingController = async (req, res, next) => {
+  try {
+    console.log(req.query);
+    const {
+      status = "*",
+      type = "*",
+      order_by: orderBy = "title",
+      sorting = "asc",
+      current_page: currentPage = 0,
+      page_size: pageSize = 10,
+    } = req.query;
+    const animes = await services.readAnimesWithSorting({
+      status,
+      type,
+      order_by: orderBy,
+      sorting,
+      current_page: parseInt(currentPage),
+      page_size: parseInt(pageSize),
+    });
+    res.send({
+      status: "success",
+      message: "Berhasil mendapatkan anime",
+      data: animes.data,
+      pages: animes.pages,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

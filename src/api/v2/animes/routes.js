@@ -13,6 +13,7 @@ router
   .get("/ongoing", controllers.getAllAnimesOngoing)
   .get("/sorting", controllers.getAnimesWithSortingController)
   .get("/genres", controllers.getAnimeGenresController)
-  .get("/:animeId", controllers.getAnimeByIdController);
+  .get("/:animeId", controllers.getAnimeByIdController)
+  .get("/details/:animeSlug", controllers.getAnimeBySlugController);
 
 module.exports = router;

@@ -165,3 +165,17 @@ exports.getAnimeByIdController = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.getAnimeBySlugController = async (req, res, next) => {
+  try {
+    const { animeSlug } = req.params;
+    const anime = await services.readAnimeBySlug(animeSlug);
+    res.send({
+      status: "success",
+      message: `Berhasil mendapatkan anime dengan slug ${animeSlug}`,
+      data: anime,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

@@ -227,3 +227,15 @@ exports.readAnimeById = async (animeId) => {
   if (!anime) throw new NotFoundError(`anime dengan ID ${animeId} tidak ditemukan`);
   return anime;
 };
+
+exports.readAnimeBySlug = async (animeSlug) => {
+  const anime = await prisma.animes.findFirst({
+    where: {
+      anime_slug: animeSlug,
+    },
+  });
+
+  if (!anime) throw new NotFoundError(`anime dengan slug ${animeSlug} tidak ditemukan`);
+
+  return anime;
+};

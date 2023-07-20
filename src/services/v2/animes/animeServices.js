@@ -180,9 +180,21 @@ exports.readAnimesWithSorting = async (queryParams) => {
   const skipedData = (queryParams.current_page * queryParams.page_size) - queryParams.page_size;
 
   const animes = await prisma.animes.findMany({
+    include: {
+      anime_genres: {
+        select: {
+          genre: true,
+        },
+      },
+      _count: {
+        select: {
+          episodes: true,
+        },
+      },
+    },
+    where: whereQuery,
     take: queryParams.page_size,
     skip: skipedData,
-    where: whereQuery,
     orderBy,
   });
 
@@ -195,4 +207,23 @@ exports.readAnimesWithSorting = async (queryParams) => {
       total_page: totalPage,
     },
   };
+};
+
+exports.readAnimeGenres = async () => {
+  const genres = await prisma.genres.findMany();
+
+  if (!genres) throw new NotFoundError("Genre tidak ditemukan");
+
+  return genres;
+};
+
+exports.readAnimeById = async (animeId) => {
+  if (!animeId) throw new InvariantError("ID anime tidak sesuai");
+  const anime = await prisma.animes.findUnique({
+    where: {
+      id: animeId,
+    },
+  });
+  if (!anime) throw new NotFoundError(`anime dengan ID ${animeId} tidak ditemukan`);
+  return anime;
 };

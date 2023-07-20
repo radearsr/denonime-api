@@ -112,7 +112,6 @@ exports.getAllAnimesOngoing = async (req, res, next) => {
 
 exports.getAnimesWithSortingController = async (req, res, next) => {
   try {
-    console.log(req.query);
     const {
       status = "*",
       type = "*",
@@ -134,6 +133,33 @@ exports.getAnimesWithSortingController = async (req, res, next) => {
       message: "Berhasil mendapatkan anime",
       data: animes.data,
       pages: animes.pages,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getAnimeGenresController = async (req, res, next) => {
+  try {
+    const genres = await services.readAnimeGenres();
+    res.send({
+      status: "success",
+      message: "Berhasil menampilkan semua genre",
+      data: genres,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getAnimeByIdController = async (req, res, next) => {
+  try {
+    const { animeId } = req.params;
+    const anime = await services.readAnimeById(parseInt(animeId));
+    res.send({
+      status: "success",
+      message: `Berhasil mendapatkan anime dengan id ${animeId}`,
+      data: anime,
     });
   } catch (error) {
     next(error);

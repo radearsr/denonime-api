@@ -67,3 +67,31 @@ exports.postEpisodeSourcesController = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.getEpisodeByAnimeIdController = async (req, res, next) => {
+  try {
+    const { animeId } = req.params;
+    const episodes = await services.readEpisodesByAnimeId(parseInt(animeId));
+    res.send({
+      status: "success",
+      message: `Berhasil mendapatkan episode dengan ID anime ${animeId}`,
+      data: episodes,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getEpisodeSourceByEpisodeIdController = async (req, res, next) => {
+  try {
+    const { episodeId } = req.params;
+    const sources = await services.readSourceByEpisodeId(parseInt(episodeId));
+    res.send({
+      status: "success",
+      message: `Berhasil mendapatkan sumber episode dengan ID ${episodeId}`,
+      data: sources,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

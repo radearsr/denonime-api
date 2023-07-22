@@ -69,3 +69,35 @@ exports.createEpisodeSources = async (payload) => {
   });
   if (!createdEpisodeSource) throw new InvariantError("Gagal menambahkan sumber episode");
 };
+
+exports.readEpisodesByAnimeId = async (animeId) => {
+  if (!animeId) throw new InvariantError(`Maaf ID anime ${animeId} tidak sesuai`);
+  const episodes = await prisma.episodes.findMany({
+    select: {
+      id: true,
+      episode_slug: true,
+      episode_type: true,
+      number_episode: true,
+      created_at: true,
+    },
+    where: {
+      anime_id: animeId,
+    },
+    orderBy: {
+      number_episode: "asc",
+    },
+  });
+  if (!episodes.length) throw new NotFoundError(`Episode dengan ID anime ${animeId} tidak ditemukan`);
+  return episodes;
+};
+
+exports.readSourceByEpisodeId = async (episodeId) => {
+  if (!episodeId) throw new InvariantError(`Maaf ID episode ${episodeId} tidak sesuai`);
+  const sources = await prisma.episode_sources.findMany({
+    where: {
+      episode_id: episodeId,
+    },
+  });
+  if (!sources.length) throw new NotFoundError(`source dengan ID episode ${episodeId} tidak ditemukan`);
+  return sources;
+};

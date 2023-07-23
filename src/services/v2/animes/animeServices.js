@@ -239,3 +239,54 @@ exports.readAnimeBySlug = async (animeSlug) => {
 
   return anime;
 };
+
+exports.readAnimesBySearch = async (queryParams) => {
+  const animesCount = await prisma.animes.count({
+    where: {
+      title: {
+        contains: queryParams.keyword,
+        mode: "insensitive",
+      },
+    },
+  });
+
+  if (!queryParams.current_page || !queryParams.page_size) throw new InvariantError("Maaf permintaan anda tidak sesuai");
+  if (!animesCount) throw new NotFoundError(`Anime dengan judul ${queryParams.keyword} tidak ditemukan`);
+
+  const totalPage = Math.ceil(animesCount / queryParams.page_size);
+  const skipedData = (queryParams.current_page * queryParams.page_size) - queryParams.page_size;
+
+  const animes = await prisma.animes.findMany({
+    include: {
+      anime_genres: {
+        select: {
+          genre: true,
+        },
+      },
+      _count: {
+        select: {
+          episodes: true,
+        },
+      },
+    },
+    where: {
+      title: {
+        contains: queryParams.keyword,
+        mode: "insensitive",
+      },
+    },
+    take: queryParams.page_size,
+    skip: skipedData,
+    orderBy: {
+      title: "asc",
+    },
+  });
+
+  return {
+    data: animes,
+    pages: {
+      current_page: queryParams.current_page,
+      total_page: totalPage,
+    },
+  };
+};

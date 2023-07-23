@@ -34,6 +34,8 @@ app.get("/", (req, res) => {
 });
 
 app.use((error, req, res, next) => {
+  console.log(error);
+
   if (error instanceof ClientError) {
     res.statusCode = error.statusCode;
     return res.send({

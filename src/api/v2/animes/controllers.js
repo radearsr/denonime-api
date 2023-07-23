@@ -23,7 +23,6 @@ exports.postAnimeController = async (req, res, next) => {
       },
     });
   } catch (error) {
-    // console.log(error);
     next(error);
   }
 };
@@ -174,6 +173,25 @@ exports.getAnimeBySlugController = async (req, res, next) => {
       status: "success",
       message: `Berhasil mendapatkan anime dengan slug ${animeSlug}`,
       data: anime,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.getAnimeBySearchController = async (req, res, next) => {
+  try {
+    const { keyword = "", current_page: currentPage = 1, page_size: pageSize = 10 } = req.query;
+    const animes = await services.readAnimesBySearch({
+      keyword: keyword.trim(),
+      current_page: parseInt(currentPage),
+      page_size: parseInt(pageSize),
+    });
+    res.send({
+      status: "success",
+      message: `Berhasil mendapatkan anime dengan keyword ${keyword}`,
+      data: animes.data,
+      pages: animes.pages,
     });
   } catch (error) {
     next(error);

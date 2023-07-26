@@ -10,7 +10,7 @@
     "db-studio": "npx prisma studio --schema=./src/prisma/schema.prisma",
     "db-generate": "npx prisma generate --schema=./src/prisma/schema.prisma",
     "db-push": "npx prisma db push --schema=./src/prisma/schema.prisma",
-    "vercel-build": "npx prisma migrate deploy --schema=./src/prisma/schema.prisma && npx prisma generate --schema=./src/prisma/schema.prisma"
+    "vercel-build": "npx prisma db push --schema=./src/prisma/schema.prisma && npx prisma generate --schema=./src/prisma/schema.prisma"
   },
   "keywords": [],
   "author": "",

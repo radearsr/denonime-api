@@ -83,9 +83,11 @@ exports.readEpisodesByAnimeId = async (animeId) => {
     where: {
       anime_id: animeId,
     },
-    orderBy: {
-      number_episode: "asc",
-    },
+    orderBy: [
+      {
+        episode_slug: "asc",
+      },
+    ],
   });
   if (!episodes.length) throw new NotFoundError(`Episode dengan ID anime ${animeId} tidak ditemukan`);
   return episodes;

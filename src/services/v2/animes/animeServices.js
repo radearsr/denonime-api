@@ -199,9 +199,15 @@ exports.readAnimesWithSorting = async (queryParams) => {
   });
 
   if (!animes) throw new InvariantError("Gagal mendapatkan anime yang dimaksud");
-
+  const newAnimeFormated = animes.map((anime) => {
+    const genres = anime.anime_genres.map((animeGenre) => (animeGenre.genre.name));
+    return {
+      ...anime,
+      anime_genres: genres,
+    };
+  });
   return {
-    data: animes,
+    data: newAnimeFormated,
     pages: {
       current_page: queryParams.current_page,
       total_page: totalPage,

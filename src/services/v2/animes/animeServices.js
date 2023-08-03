@@ -296,3 +296,76 @@ exports.readAnimesBySearch = async (queryParams) => {
     },
   };
 };
+
+exports.readAnimesByGenreName = async (genreSlug, queryParams) => {
+  const orderBy = utils.createOrderBy(queryParams.order_by, queryParams.sorting);
+  const whereQuery = utils.createWhereQuery(queryParams.status, queryParams.type);
+
+  const genre = await prisma.genres.findFirst({
+    select: {
+      id: true,
+    },
+    where: {
+      genre_slug: {
+        equals: genreSlug,
+      },
+    },
+  });
+
+  if (!genre) throw new NotFoundError(`Genre ${genreSlug} tidak ditemukan`);
+
+  const animeIds = await prisma.anime_genres.findMany({
+    select: {
+      anime_id: true,
+    },
+    where: {
+      genre_id: genre.id,
+    },
+  });
+
+  const animeIdArrays = animeIds.map((anime) => anime.anime_id);
+
+  const totalAnimes = await prisma.animes.count({
+    where: {
+      ...whereQuery,
+      id: {
+        in: animeIdArrays,
+      },
+    },
+  });
+
+  const totalPage = Math.ceil(totalAnimes / queryParams.page_size);
+  const skipedData = (queryParams.current_page * queryParams.page_size) - queryParams.page_size;
+
+  const animes = await prisma.animes.findMany({
+    include: {
+      anime_genres: {
+        select: {
+          genre: true,
+        },
+      },
+      _count: {
+        select: {
+          episodes: true,
+        },
+      },
+    },
+    where: {
+      ...whereQuery,
+      id: {
+        in: animeIdArrays,
+      },
+    },
+    take: queryParams.page_size,
+    skip: skipedData,
+    orderBy,
+  });
+
+  return {
+    data: animes,
+    pages: {
+      current_page: queryParams.current_page,
+      total_page: totalPage,
+    },
+  };
+};

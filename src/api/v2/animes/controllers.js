@@ -197,3 +197,33 @@ exports.getAnimeBySearchController = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.getAnimeByGenreSlugController = async (req, res, next) => {
+  try {
+    const { genreSlug } = req.params;
+    const {
+      status = "*",
+      type = "*",
+      order_by: orderBy = "title",
+      sorting = "asc",
+      current_page: currentPage = 0,
+      page_size: pageSize = 10,
+    } = req.query;
+    const animes = await services.readAnimesByGenreName(genreSlug, {
+      status,
+      type,
+      order_by: orderBy,
+      sorting,
+      current_page: parseInt(currentPage),
+      page_size: parseInt(pageSize),
+    });
+    res.send({
+      status: "success",
+      message: `Berhasil mendapatkan anime dengan genre ${genreSlug}`,
+      data: animes.data,
+      pages: animes.pages,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

@@ -13,6 +13,7 @@ router
   .get("/ongoing", controllers.getAllAnimesOngoing)
   .get("/sorting", controllers.getAnimesWithSortingController)
   .get("/genres", controllers.getAnimeGenresController)
+  .get("/genres/details/:genreSlug", controllers.getAnimeByGenreSlugController)
   .get("/details/:animeSlug", controllers.getAnimeBySlugController)
   .get("/search", controllers.getAnimeBySearchController)
   .get("/:animeId", controllers.getAnimeByIdController);
